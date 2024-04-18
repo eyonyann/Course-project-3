@@ -1,0 +1,41 @@
+.sort-dropdown {
+    text-align: center;
+    margin: 30px;
+}
+
+#sort-select {
+    background-color: #E9D3A8; /* Matching the sort-button background color */
+    border-radius: 14px; /* Matching the sort-button border-radius */
+    height: 63px; /* Matching the sort-button height */
+    line-height: 63px; /* Centralize text vertically */
+    text-align: center;
+    font-size: 32px; /* Matching the sort-button font size */
+    color: #353535; /* Matching the menu-button color */
+    font-weight: bold; /* Matching the sort-button font weight */
+    width: 588px; /* Matching the sort-button width */
+    padding: 0 20px; /* Adding padding to match the design, adjust as needed */
+    border: none; /* Remove default border */
+    cursor: pointer; /* To indicate that it's clickable */
+    transition: background-color 0.3s ease; /* For a smooth color transition */
+    -webkit-appearance: none; /* Removes default styling by the browser */
+    -moz-appearance: none; /* Removes default styling by the browser */
+    appearance: none; /* Removes default styling by the browser */
+}
+
+#sort-select:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+#sort-select:focus {
+    outline: none; /* Remove the outline when the dropdown is clicked */
+}
+
+#sort-select option {
+    background-color: #E9D3A8; /* Set the option background color */
+    color: #353535; /* Set the option text color */
+    font-size: 32px;
+    font-weight: bold;
+    outline: none;
+    border-radius: 14px;
+}

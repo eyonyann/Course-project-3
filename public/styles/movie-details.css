@@ -1,0 +1,93 @@
+.big-movie-container {
+    max-width: 800px; /* Adjust width as needed */
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow for depth */
+    background: #FFFFFF; /* white background */
+    border-radius: 10px; /* rounded corners */
+    display: flex;
+    align-items: flex-start; /* align items to the start of the flex container */
+    flex-direction: column;
+}
+
+
+.big-movie-container img {
+    max-width: 100%; /* ensure image is responsive and doesn't overflow */
+    height: auto;
+    border-radius: 20px; /* rounded corners */
+    margin-right: 30px; /* space between the poster and the text */
+}
+
+.movie-content {
+}
+
+.movie-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #353535;
+}
+
+.movie-details p {
+    margin: 5px 0; /* uniform space between detail lines */
+    font-size: 16px; /* appropriate font size for details */
+    color: #666; /* lighter color for detail text */
+}
+
+.movie-description {
+    padding: 15px 0; /* space above and below the description */
+    border-top: 1px solid #eee; /* subtle line to separate the description */
+    margin-top: 20px; /* space between details and description */
+    color: #353535;
+    font-size: 16px;
+    line-height: 1.5; /* line height for readability */
+}
+
+.rating-section {
+    color: #353535;
+    font-family: 'Stara', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.rating-star {
+    color: #353535;
+    font-family: 'Stara', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    background: #E9D3A8;
+    border: none;
+    border-radius: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.rating-star:hover,
+.rating-star.active, /* Class to be added via JavaScript when a star is clicked */
+.rating-star.active ~ .rating-star { /* This will target all the following siblings (stars) after an active one */
+    color: #C23939;
+}
+
+/* Numeric rating styles *
+
+/* Review button styles */
+.review-button {
+    background: #E9D3A8;
+    border: none;
+    color: #353535;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 10px; /* Space from the rating section */
+
+    font-weight: bold;
+    transition: color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: none; /* Initially no box-shadow */
+}
+
+.review-button:hover {
+    background-color: #C23939;
+    color: #E9D3A8;
+}

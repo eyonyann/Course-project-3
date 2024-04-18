@@ -1,0 +1,103 @@
+.movie-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 61px;
+    margin: 30px auto;
+    box-sizing: border-box;
+}
+
+.movie-box {
+    position: relative;
+    width: 256px;
+    height: 363px;
+    border-radius: 34px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.movie-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.movie-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0); /* Start with no overlay */
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    opacity: 0; /* Start with info hidden */
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.movie-info * {
+    visibility: hidden; /* Start with text invisible */
+    transition: visibility 0.3s ease;
+}
+
+.movie-title {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.movie-director {
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.movie-rating {
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+}
+
+.movie-my-rating {
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+}
+
+.movie-box:hover .movie-info {
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    opacity: 1;
+}
+
+.movie-box:hover .movie-info * {
+    visibility: visible; /* Make text visible */
+}
+
+.movie-box:hover img {
+    transform: scale(1.05); /* Slightly enlarge the image */
+}
+
+.movie-title, .movie-director {
+    transition: opacity 0.3s ease 0.3s; /* Delayed transition */
+}
+
+.movie-box:hover .movie-title, .movie-box:hover .movie-director {
+    opacity: 1;
+}

@@ -1,0 +1,94 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Stara', sans-serif;
+    background: #fff;
+}
+
+.top-bar {
+    background-color: #E9D3A8;
+    height: 268px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+.logo {
+    font-size: 100px;
+    color: #C23939;
+    font-weight: bold;
+    cursor: pointer;
+}
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.menu-button {
+    font-size: 40px;
+    color: #C23939;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 20px;
+    padding: 5px 10px;
+    transition: color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    border-radius: 15px; /* Consistent border-radius */
+    box-shadow: none; /* Initially no box-shadow */
+}
+
+.menu-button:hover, .menu-button.active {
+    color: #E9D3A8;
+    background-color: #C23939;
+    box-shadow: 0 0 0 3px #C23939; /* Add the 'glowing' effect */
+}
+
+.menu-button:not(:hover):not(.active) {
+    box-shadow: none;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .top-bar {
+        height: auto;
+        padding: 20px 0;
+    }
+    .logo {
+        font-size: 60px;
+    }
+    .menu-button {
+        font-size: 30px;
+        margin: 0 10px;
+    }
+    .sort-button {
+        width: 80%;
+        font-size: 28px;
+    }
+    .movie-container {
+        gap: 30px;
+    }
+    .movie-box {
+        width: 45%;
+        height: auto; /* adjust height to keep the aspect ratio */
+    }
+}
+/* Further responsive adjustments for phones */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 50px;
+    }
+    .menu-button {
+        font-size: 25px;
+    }
+    .sort-button {
+        font-size: 24px;
+    }
+    .movie-box {
+        width: 90%;
+        margin: 0 auto 30px;
+    }
+}

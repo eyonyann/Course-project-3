@@ -1,0 +1,28 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.pagination div {
+    font-size: 32px;
+    cursor: pointer;
+    margin: 20px;
+}
+
+.pagination div:hover {
+    color: #C23939; /* изменение цвета при наведении */
+}
+
+.page-number {
+    background-color: #E9D3A8;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #353535;
+    font-weight: bold;
+}

@@ -1,0 +1,69 @@
+.sign-in-container, .sign-up-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    padding: 20px;
+}
+
+.sign-in-container form, .sign-up-container form {
+    height: 2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#name-box, #username-box, #password-box {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    color: #353535;
+    background-color: #E9D3A8;
+    outline: none; /* Remove the default focus outline */
+    width: 500px; /* Adjust as necessary */
+    margin-bottom: 30px;
+}
+
+#name-box::placeholder, #username-box::placeholder, #password-box::placeholder {
+    color: rgba(53, 53, 53, 0.7);
+}
+
+
+.sign-in-container button, .sign-up-container button {
+    margin-top: 2vw;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 40px;
+    font-weight: bold;
+    background-color: #C23939; /* Button background color */
+    border: none;
+    border-radius: 15px;
+    color: #E9D3A8;
+    cursor: pointer;
+    transition: color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.sign-in-container button:hover, .sign-up-container button:hover {
+    color: #E9D3A8;
+    background-color: #C23939;
+    box-shadow: 0 0 0 3px #C23939; /* Add the 'glowing' effect */
+}
+
+.profile-container button:not(:hover):not(.active) {
+    box-shadow: none;
+}
+
+.ref {
+    margin-top: 10px;
+    color: #353535;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.error-message {
+    color: #C23939;
+}

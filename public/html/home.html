@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/common.css">
+    <link rel="stylesheet" type="text/css" href="../styles/sort-dropdown.css">
+    <link rel="stylesheet" type="text/css" href="../styles/movie-container.css">
+    <link rel="stylesheet" type="text/css" href="../styles/pagination.css">
+    <title>Movie Reviews</title>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo">映画批評</div>
+    <nav>
+        <div class="menu-button active" id="main">Главное</div>
+        <div class="menu-button" id="favorites">Моё</div>
+        <div class="menu-button" id="search">Поиск</div>
+        <div class="menu-button" id="profile">Профиль</div>
+    </nav>
+</div>
+
+
+<div class="sort-dropdown">
+    <select id="sort-select">
+        <option value="highest-rated">С самым высоким рейтингом</option>
+        <option value="lowest-rated">С самым низким рейтингом</option>
+        <option value="alphabetical">По алфавиту</option>
+        <option value="release-year">По году выпуска</option>
+    </select>
+</div>
+
+<div class="movie-container">
+    <div class="movie-box">
+        <img src="../res/john-wick-4-poster.jpg" alt="John Wick 4">
+        <div class="movie-info">
+            <div class="movie-rating">7.6</div>
+            <div class="movie-title">John Wick 4</div>
+            <div class="movie-director">Чад Стахелски</div>
+        </div>
+    </div>
+    <div class="movie-box">
+        <img src="../res/kovboj-bibop-poster.jpg" alt="Cowboy Bebop">
+        <div class="movie-info">
+            <div class="movie-rating">8.7</div>
+            <div class="movie-title">Cowboy Bebop</div>
+            <div class="movie-director">Синъитиро Ватанабэ</div>
+        </div>
+    </div>
+    <div class="movie-box">
+        <img src="../res/vinland-saga-poster.jpg" alt="Vinland Saga">
+        <div class="movie-info">
+            <div class="movie-rating">8.5</div>
+            <div class="movie-title">Vinland Saga</div>
+            <div class="movie-director">Сюхэй Ябута</div>
+        </div>
+    </div>
+    <div class="movie-box">
+        <img src="../res/hodyachij-zamok-poster.jpg" alt="Howl no Ugoku Shiro">
+        <div class="movie-info">
+            <div class="movie-rating">8.3</div>
+            <div class="movie-title">Howl no Ugoku Shiro</div>
+            <div class="movie-director">Хаяо Миядзаки</div>
+        </div>
+    </div>
+</div>
+
+<div class="pagination">
+    <div class="prev-page">←</div>
+    <div class="page-number">1</div>
+    <div class="next-page">→</div>
+</div>
+
+<script>
+    // Получаем ссылки на все кнопки меню
+    const mainButton = document.getElementById('main');
+    const myButton = document.getElementById('favorites');
+    const searchButton = document.getElementById('search');
+    const profileButton = document.getElementById('profile');
+    const signInButton = document.getElementById('signIn');
+
+    // Обработчики событий для кнопок
+    mainButton.addEventListener('click', () => {
+        window.location.href = '/'; // Перенаправляем на главную страницу
+    });
+
+    myButton.addEventListener('click', () => {
+        window.location.href = '/favorites'; // Перенаправляем на страницу "Моё"
+    });
+
+    searchButton.addEventListener('click', () => {
+        window.location.href = '/search'; // Перенаправляем на страницу поиска
+    });
+
+    profileButton.addEventListener('click', () => {
+        window.location.href = '/profile'; // Перенаправляем на страницу входа
+    });
+</script>
+
+</body>
+</html>

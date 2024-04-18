@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/common.css">
+    <link rel="stylesheet" type="text/css" href="../styles/search-container.css">
+    <title>Movie Reviews</title>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo">映画批評</div>
+    <nav>
+        <div class="menu-button" id="main">Главное</div>
+        <div class="menu-button" id="favorites">Моё</div>
+        <div class="menu-button active" id="search">Поиск</div>
+        <div class="menu-button" id="profile">Профиль</div>
+    </nav>
+</div>
+
+
+<div class="search-container">
+    <form action="/search" method="get"> <!-- Replace with your actual search endpoint -->
+        <input type="text" id="search-box" name="q" placeholder="Поиск">
+<!--        <button type="submit">Найти</button>-->
+    </form>
+</div>
+<script>
+    // Получаем ссылки на все кнопки меню
+    const mainButton = document.getElementById('main');
+    const myButton = document.getElementById('favorites');
+    const searchButton = document.getElementById('search');
+    const profileButton = document.getElementById('profile');
+    const signInButton = document.getElementById('signIn');
+
+    // Обработчики событий для кнопок
+    mainButton.addEventListener('click', () => {
+        window.location.href = '/'; // Перенаправляем на главную страницу
+    });
+
+    myButton.addEventListener('click', () => {
+        window.location.href = '/favorites'; // Перенаправляем на страницу "Моё"
+    });
+
+    searchButton.addEventListener('click', () => {
+        window.location.href = '/search'; // Перенаправляем на страницу поиска
+    });
+
+    profileButton.addEventListener('click', () => {
+        window.location.href = '/profile'; // Перенаправляем на страницу входа
+    });
+
+    window.onload = function() {
+        document.getElementById('search-box').focus();
+    };
+</script>
+</body>
+</html>

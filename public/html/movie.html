@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/common.css">
+    <link rel="stylesheet" type="text/css" href="../styles/movie-details.css">
+    <title>Movie Reviews</title>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo">映画批評</div>
+    <nav>
+        <div class="menu-button active">Главное</div> <!-- 'active' class added here -->
+        <div class="menu-button">Моё</div>
+        <div class="menu-button">Поиск</div>
+        <div class="menu-button">Профиль</div>
+    </nav>
+</div>
+
+<div class="big-movie-container">
+    <div class="movie-content">
+        <img src="../res/kovboj-bibop-poster.jpg" alt="Cowboy Bebop">
+        <div class="movie-title">Cowboy Bebop (1998)</div>
+        <div class="movie-details">
+            <p>Год производства: 1998</p>
+            <p>Страна: Япония</p>
+            <p>Режиссер: Синъитиро Ватанабэ</p>
+            <p>Рейтинг: 8.7</p>
+        </div>
+        <div class="movie-description">
+            Бывший полицейский Джет Блэк и человек с тёмным прошлым Спайк Шпигель совершенно не планировали увеличивать экипаж космического корабля «Бибоп», являющегося для них домом и средством передвижения. Но сети, раскинутые для поимки дорогостоящих отбросов общества, принесли им Фэй Валентайн — очаровательную картёжницу с колоссальным долгом, Эд — потерявшуюся компьютерную умницу и Эйн — предположительно, самую умную собаку на свете. Именно в таком составе экипаж «Бибопа» и продолжает своё дело — охоту за головами.
+        </div>
+    </div>
+    <div class="rating-section">
+        <span>Оцените:</span>
+        <div class="rating-star" id="rating-container"></div>
+        <button class="review-button">Написать рецензию</button>
+    </div>
+</div>
+
+<script>
+    var ratingContainer = document.getElementById('rating-container');
+
+    for (var i = 1; i <= 10; i++) {
+        var button = document.createElement('button');
+        button.classList.add('rating-star');
+        button.textContent = i;
+
+        ratingContainer.appendChild(button);
+    }
+</script>
+
+</body>
+</html>

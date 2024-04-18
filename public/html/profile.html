@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/common.css">
+    <link rel="stylesheet" type="text/css" href="../styles/profile-container.css">
+    <title>Movie Reviews</title>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo">映画批評</div>
+    <nav>
+        <div class="menu-button" id="main">Главное</div>
+        <div class="menu-button" id="favorites">Моё</div>
+        <div class="menu-button" id="search">Поиск</div>
+        <div class="menu-button active" id="profile">Профиль</div>
+    </nav>
+</div>
+
+
+<div class="profile-container">
+    <form id="profileForm">
+        <input type="text" id="name-box" placeholder="Фамилия Имя">
+        <input type="text" id="username-box" placeholder="Username">
+        <input type="password" id="old-password-box" placeholder="Старый пароль">
+        <input type="password" id="new-password-box" placeholder="Новый пароль">
+        <button type="button" onclick="updateProfile()">Сохранить</button>
+    </form>
+</div>
+
+
+<script>
+    // Получаем ссылки на все кнопки меню
+    const mainButton = document.getElementById('main');
+    const myButton = document.getElementById('favorites');
+    const searchButton = document.getElementById('search');
+    const profileButton = document.getElementById('profile');
+    const signInButton = document.getElementById('signIn');
+
+    // Обработчики событий для кнопок
+    mainButton.addEventListener('click', () => {
+        window.location.href = '/'; // Перенаправляем на главную страницу
+    });
+
+    myButton.addEventListener('click', () => {
+        window.location.href = '/favorites'; // Перенаправляем на страницу "Моё"
+    });
+
+    searchButton.addEventListener('click', () => {
+        window.location.href = '/search'; // Перенаправляем на страницу поиска
+    });
+
+    profileButton.addEventListener('click', () => {
+        window.location.href = '/profile'; // Перенаправляем на страницу входа
+    });
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        fetch('/api/getUserProfile')
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Failed to fetch profile data');
+            })
+            .then(data => {
+                document.getElementById('name-box').value = data.name || 'Фамилия Имя';
+                document.getElementById('username-box').value = data.username || 'Username';
+            })
+            .catch(error => console.error('Failed to load user data:', error));
+    });
+</script>
+
+</body>
+</html>

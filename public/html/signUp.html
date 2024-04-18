@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/styles/sign-in-container.css">
+    <link rel="stylesheet" type="text/css" href="/styles/common.css">
+    <title>Movie Reviews</title>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo">映画批評</div>
+    <nav>
+        <div class="menu-button">Главное</div>
+        <div class="menu-button">Моё</div>
+        <div class="menu-button">Поиск</div>
+        <div class="menu-button active">Войти</div>
+    </nav>
+</div>
+
+<div class="sign-up-container">
+    <form action="/signUp" method="post" id="signUpForm">
+        <input type="text" id="name-box" name="name" placeholder="Фамилия Имя">
+        <input type="text" id="username-box" name="username" placeholder="username">
+        <input type="password" id="password-box" name="password" placeholder="password">
+        <div class="error-message" id="errorMessage"></div>
+        <button type="submit">Создать аккаунт</button>
+        <a class="ref" href="/signIn">Войти</a>
+    </form>
+</div>
+
+<script>
+    const signUpForm = document.getElementById('signUpForm');
+    const errorMessage = document.getElementById('errorMessage');
+
+    signUpForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(signUpForm);
+        const response = await fetch('/signUp', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            window.location.href = '/home'; // Redirect to home page on successful login
+        } else {
+            errorMessage.textContent = data.error; // Display error message
+        }
+    });
+</script>
+
+
+</body>
+</html>
