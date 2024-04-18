@@ -7,7 +7,8 @@
     <link rel="stylesheet" type="text/css" href="../styles/sort-dropdown.css">
     <link rel="stylesheet" type="text/css" href="../styles/movie-container.css">
     <link rel="stylesheet" type="text/css" href="../styles/pagination.css">
-    <title>Movie Reviews</title>
+    <title rel="shortcut icon">😊 Movie Reviews</title>
+    <link rel="shortcut icon" href="../res/logo.png" />
 </head>
 <body>
 
@@ -72,12 +73,34 @@
     <div class="next-page">→</div>
 </div>
 
+<footer>
+    <div class="footer">
+        <a class="git-button" id="github" href="https://github.com/eyonyann/Course-project-3" target="_blank">GitHub</a>
+    </div>
+</footer>
+
 <script>
+    // Определяем грустный смайлик
+    const sadSmiley = '😞';
+
+    // Функция для обработки события изменения видимости вкладки
+    function handleVisibilityChange() {
+        if (document.hidden) {
+            document.title = sadSmiley + ' Movie Reviews'; // Изменяем заголовок вкладки на грустный смайлик
+        } else {
+            document.title = '😊 Movie Reviews'; // Возвращаем исходный заголовок вкладки
+        }
+    }
+
+    // Добавляем обработчик события изменения видимости вкладки
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     // Получаем ссылки на все кнопки меню
     const mainButton = document.getElementById('main');
     const myButton = document.getElementById('favorites');
     const searchButton = document.getElementById('search');
     const profileButton = document.getElementById('profile');
+    const gitButton = document.getElementById('github');
     const signInButton = document.getElementById('signIn');
 
     // Обработчики событий для кнопок
@@ -95,6 +118,11 @@
 
     profileButton.addEventListener('click', () => {
         window.location.href = '/profile'; // Перенаправляем на страницу входа
+    });
+
+    gitButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.open('https://github.com/eyonyann/Course-project-3', '_blank'); // Открываем ссылку в новой вкладке
     });
 </script>
 

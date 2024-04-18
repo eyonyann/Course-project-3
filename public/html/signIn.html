@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/styles/sign-in-container.css">
     <link rel="stylesheet" type="text/css" href="/styles/common.css">
-    <title>Movie Reviews</title>
+    <title rel="shortcut icon">😊 Movie Reviews</title>
+    <link rel="shortcut icon" href="../res/logo.png" />
 </head>
 <body>
 
@@ -30,6 +31,20 @@
 </div>
 
 <script>
+    // Определяем грустный смайлик
+    const sadSmiley = '😞';
+
+    // Функция для обработки события изменения видимости вкладки
+    function handleVisibilityChange() {
+        if (document.hidden) {
+            document.title = sadSmiley + ' Movie Reviews'; // Изменяем заголовок вкладки на грустный смайлик
+        } else {
+            document.title = '😊 Movie Reviews'; // Возвращаем исходный заголовок вкладки
+        }
+    }
+
+    // Добавляем обработчик события изменения видимости вкладки
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     const signInForm = document.getElementById('signInForm');
     const errorMessage = document.getElementById('errorMessage');
 

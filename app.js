@@ -72,10 +72,29 @@ app.get('/search', requireLogin, (req, res) => {
     res.sendFile(__dirname + '/public/html/search.html');
 });
 
-app.get('/profile', requireLogin, async (req, res) => {
-    res.sendFile(__dirname + '/public/html/profile.html');
-});
 
+app.get('/profile', requireLogin, async (req, res) => {
+    try {
+        // Получаем имя пользователя из сессии
+        const username = req.session.user;
+
+        // Находим пользователя в базе данных
+        const user = await User.findOne({ where: { username: username } });
+
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Рендерим страницу profile.ejs с данными пользователя
+        res.render(__dirname + '/public/html/profile.ejs', {
+            name: user.name,
+            username: user.username
+        });
+    } catch (error) {
+        console.error('Failed to load profile:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 
 
 app.get('/signIn', (req, res) => {
@@ -141,6 +160,7 @@ app.post('/signUp', upload.none(), async (req, res) => {
             // Создаем нового пользователя в базе данных
             const newUser = await User.create({
                 username: username,
+                name: name,
                 password: hashedPassword
             });
 

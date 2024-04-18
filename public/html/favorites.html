@@ -7,7 +7,8 @@
     <link rel="stylesheet" type="text/css" href="../styles/sort-dropdown.css">
     <link rel="stylesheet" type="text/css" href="../styles/movie-container.css">
     <link rel="stylesheet" type="text/css" href="../styles/pagination.css">
-    <title>Movie Reviews</title>
+    <title rel="shortcut icon">😊 Movie Reviews</title>
+    <link rel="shortcut icon" href="../res/logo.png" />
 </head>
 <body>
 
@@ -73,6 +74,20 @@
 </div>
 
 <script>
+    // Определяем грустный смайлик
+    const sadSmiley = '😞';
+
+    // Функция для обработки события изменения видимости вкладки
+    function handleVisibilityChange() {
+        if (document.hidden) {
+            document.title = sadSmiley + ' Movie Reviews'; // Изменяем заголовок вкладки на грустный смайлик
+        } else {
+            document.title = '😊 Movie Reviews'; // Возвращаем исходный заголовок вкладки
+        }
+    }
+
+    // Добавляем обработчик события изменения видимости вкладки
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     // Получаем ссылки на все кнопки меню
     const mainButton = document.getElementById('main');
     const myButton = document.getElementById('favorites');

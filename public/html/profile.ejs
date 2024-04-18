@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../styles/common.css">
     <link rel="stylesheet" type="text/css" href="../styles/profile-container.css">
-    <title>Movie Reviews</title>
+    <title rel="shortcut icon">😊 Movie Reviews</title>
+    <link rel="shortcut icon" href="../res/logo.png" />
 </head>
 <body>
 
@@ -22,8 +23,8 @@
 
 <div class="profile-container">
     <form id="profileForm">
-        <input type="text" id="name-box" placeholder="Фамилия Имя">
-        <input type="text" id="username-box" placeholder="Username">
+        <input type="text" id="name-box" value="<%= name %>" placeholder="Фамилия Имя">
+        <input type="text" id="username-box" value="<%= username %>" placeholder="Username">
         <input type="password" id="old-password-box" placeholder="Старый пароль">
         <input type="password" id="new-password-box" placeholder="Новый пароль">
         <button type="button" onclick="updateProfile()">Сохранить</button>
@@ -31,7 +32,51 @@
 </div>
 
 
+
 <script>
+    // Определяем грустный смайлик
+    const sadSmiley = '😞';
+
+    // Функция для обработки события изменения видимости вкладки
+    function handleVisibilityChange() {
+        if (document.hidden) {
+            document.title = sadSmiley + ' Movie Reviews'; // Изменяем заголовок вкладки на грустный смайлик
+        } else {
+            document.title = '😊 Movie Reviews'; // Возвращаем исходный заголовок вкладки
+        }
+    }
+
+    // Добавляем обработчик события изменения видимости вкладки
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    async function updateProfile() {
+        const name = document.getElementById('name-box').value;
+        const username = document.getElementById('username-box').value;
+        const oldPassword = document.getElementById('old-password-box').value;
+        const newPassword = document.getElementById('new-password-box').value;
+
+        try {
+            // Отправляем запрос на сервер для обновления профиля
+            const response = await fetch('/api/updateProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, username, oldPassword, newPassword })
+            });
+
+            if (response.ok) {
+                // Если обновление прошло успешно, выводим сообщение об успехе
+                alert('Профиль успешно обновлен!');
+            } else {
+                // Если произошла ошибка, выводим сообщение об ошибке
+                throw new Error('Failed to update profile');
+            }
+        } catch (error) {
+            console.error('Failed to update profile:', error);
+            alert('Не удалось обновить профиль');
+        }
+    }
     // Получаем ссылки на все кнопки меню
     const mainButton = document.getElementById('main');
     const myButton = document.getElementById('favorites');

@@ -40,7 +40,32 @@ nav {
     box-shadow: none; /* Initially no box-shadow */
 }
 
-.menu-button:hover, .menu-button.active {
+.footer {
+    background-color: #E9D3A8;
+    height: 6vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+}
+
+.git-button {
+    margin-top: 15px;
+    justify-content: center;
+    padding: 5px;
+    font-size: 40px;
+    font-weight: bold;
+    background-color: #E9D3A8; /* Button background color */
+    border: none;
+    border-radius: 15px;
+    color: #C23939;
+    cursor: pointer;
+    transition: color 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+}
+
+.menu-button:hover, .menu-button.active, .git-button:hover {
     color: #E9D3A8;
     background-color: #C23939;
     box-shadow: 0 0 0 3px #C23939; /* Add the 'glowing' effect */
