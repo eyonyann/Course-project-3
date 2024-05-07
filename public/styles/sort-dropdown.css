@@ -4,7 +4,7 @@
 }
 
 #sort-select {
-    background-color: #E9D3A8; /* Matching the sort-button background color */
+    background-color: #ffeecf; /* Matching the sort-button background color */
     border-radius: 14px; /* Matching the sort-button border-radius */
     height: 63px; /* Matching the sort-button height */
     line-height: 63px; /* Centralize text vertically */
@@ -32,7 +32,7 @@
 }
 
 #sort-select option {
-    background-color: #E9D3A8; /* Set the option background color */
+    background-color: #ffeecf; /* Set the option background color */
     color: #353535; /* Set the option text color */
     font-size: 32px;
     font-weight: bold;

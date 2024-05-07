@@ -1,18 +1,22 @@
-// Import required modules
 const express = require('express');
 const session = require('express-session');
 const multer = require('multer');
 const bcrypt = require('bcrypt');
 const sequelize = require('./utils/database');
-
-// Import models
+const movieRoutes = require('./routes/movieRoutes')
+const router = express.Router();
 const User = require('./models/User');
-const Admin = require('./models/Admin');
-const Client = require('./models/Client');
-const Movie = require('./models/Movie');
 const Review = require('./models/Review');
-const Rating = require('./models/Rating');
 
+// Define associations
+User.hasMany(Review, { foreignKey: 'userId' });
+Review.belongsTo(User, { foreignKey: 'userId' });
+
+
+module.exports = {
+    User,
+    Review
+};
 // Import controllers
 const homeController = require('./controllers/homeController');
 const favoritesController = require('./controllers/favoritesController');
@@ -21,6 +25,7 @@ const profileController = require('./controllers/profileController');
 const signInController = require('./controllers/signInController');
 const signUpController = require('./controllers/signUpController');
 const logoutController = require('./controllers/logoutController');
+const movieController = require('./controllers/movieController');
 
 // Create Express application
 const app = express();
@@ -57,6 +62,8 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(express.json());
 
+app.use('/movies', movieRoutes);
+
 // Middleware: Check if user is logged in
 function requireLogin(req, res, next) {
     if (!req.session.user) {
@@ -79,5 +86,11 @@ app.get('/signUp', signUpController.getSignUp);
 app.post('/signUp', upload.none(), signUpController.postSignUp);
 app.post('/logout', upload.none(), logoutController.postLogout);
 
+// Movie route should be added to the app, not the router
+app.get('/movie/:id', movieController.getMovieDetails);
+app.post('/movie/:id', movieController.postMovieDetails);
+
 // Start the server
 start();
+
+

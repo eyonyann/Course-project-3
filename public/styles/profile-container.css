@@ -21,7 +21,7 @@
     border: none;
     border-radius: 15px;
     color: #353535;
-    background-color: #E9D3A8;
+    background-color: #ffeecf;
     outline: none; /* Remove the default focus outline */
     width: 500px; /* Adjust as necessary */
     margin-bottom: 30px;
@@ -42,14 +42,14 @@
     background-color: #C23939; /* Button background color */
     border: none;
     border-radius: 15px;
-    color: #E9D3A8;
+    color: #ffeecf;
     cursor: pointer;
     transition: color 0.3s ease, box-shadow 0.3s ease;
 }
 
 
 .profile-container button:hover, .search-container button.active {
-    color: #E9D3A8;
+    color: #ffeecf;
     background-color: #C23939;
     box-shadow: 0 0 0 3px #C23939; /* Add the 'glowing' effect */
 }

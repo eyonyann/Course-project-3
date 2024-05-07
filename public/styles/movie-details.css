@@ -13,8 +13,8 @@
 
 .poster {
 /*    max-width: 100%;*/ /* ensure image is responsive and doesn't overflow */
-    max-width: 400px;
-    height: auto;
+    width: 400px;
+    height: 500px;
     border-radius: 20px; /* rounded corners */
     margin-right: 30px; /* space between the poster and the text */
 }
@@ -80,10 +80,14 @@
     border-radius: 10px;
     cursor: pointer;
     background-color: white;
-/*    margin-right: 5px;*/
 }
 
 .rating-star:hover {
+    background-color: #C23939;
+    color: #fff;
+}
+
+.rating-star-active {
     background-color: #C23939;
     color: #fff;
 }
@@ -96,16 +100,21 @@
     font-weight: bold;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .review-form {
     align-items: center;
+    justify-content: center;
     margin-top: 50px;
     font-family: 'Stara', sans-serif;
     font-size: 40px;
     display: flex;
     flex-direction: column;
+    width: 90%;
 }
+
 
 .form-epigraph {
     font-size: 40px;
@@ -115,10 +124,10 @@
     border: none;
     border-radius: 15px;
     color: #353535;
-    background-color: #E9D3A8;
+    background-color: #ffeecf;
     outline: none; /* Remove the default focus outline */
-    width: 500px; /* Adjust as necessary */
     margin-bottom: 30px;
+    width: 100%;
 }
 
 .form-text {
@@ -128,11 +137,11 @@
     border: none;
     border-radius: 15px;
     color: #353535;
-    background-color: #E9D3A8;
+    background-color: #ffeecf;
     outline: none; /* Remove the default focus outline */
-    width: 750px;
     height: 300px;
     margin-bottom: 30px;
+    width: 100%;
 }
 
 .form-epigraph::placeholder, .form-text::placeholder {
@@ -140,7 +149,8 @@
 }
 
 .review-buttons {
-    align-content: center;
+    justify-content: center;
+    align-items: center;
     margin-top: 5px;
     display: flex;
     flex-direction: row;
@@ -151,7 +161,7 @@
     padding: 10px 20px;
     font-size: 40px;
     font-weight: bold;
-    background-color: #E9D3A8; /* Button background color */
+    background-color: #ffeecf; /* Button background color */
     border: none;
     border-radius: 15px;
     color: #C23939;
@@ -172,7 +182,7 @@
 }
 
 .review-form-accept:hover, .review-form-cancel:hover {
-    color: #E9D3A8;
+    color: #ffeecf;
     background-color: #C23939;
     box-shadow: 0 0 0 3px #C23939;
     transition: color 0.3s ease, box-shadow 0.3s ease;
@@ -183,7 +193,7 @@
 }
 
 .review-button {
-    background: #E9D3A8;
+    background: #ffeecf;
     border: none;
     color: #353535;
     padding: 10px 20px;
@@ -198,13 +208,17 @@
 
 .review-button:hover {
     background-color: #C23939;
-    color: #E9D3A8;
+    color: #ffeecf;
+}
+
+.review-container {
+    width: 100%;
 }
 
 .review {
     margin-top: 40px;
     color: #353535;
-    background-color: #E9D3A8;
+    background-color: #ffeecf;
     font-family: 'Stara', sans-serif;
     display: flex;
     flex-direction: column;
@@ -223,7 +237,7 @@
     margin-right: 10px;
     cursor: pointer;
     font-size: 30px;
-    background: #E9D3A8;
+    background: #ffeecf;
     border-radius: 15px;
     border: none;
 }

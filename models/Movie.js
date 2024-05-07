@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
-const sequelize = require('../utils/database')
+const Sequelize = require('sequelize');
+const sequelize = require('../utils/database');
 
 const Movie = sequelize.define('Movie', {
     id: {
@@ -26,7 +26,15 @@ const Movie = sequelize.define('Movie', {
     },
     rating: {
         type: Sequelize.DECIMAL(3, 1)
+    },
+    countOfRatings: {
+        type: Sequelize.INTEGER
+    },
+    poster: {
+        type: Sequelize.STRING
     }
 }, {
     timestamps: false
 });
+
+module.exports = Movie;

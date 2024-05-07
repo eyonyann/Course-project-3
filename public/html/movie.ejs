@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/common.css">
+    <link rel="stylesheet" type="text/css" href="../styles/movie-details.css">
+    <title rel="shortcut icon">😊 Movie Reviews</title>
+    <link rel="shortcut icon" href="../res/logo.png" />
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo">映画批評</div>
+    <nav>
+        <div class="menu-button" id="main">Главное</div>
+        <div class="menu-button" id="favorites">Моё</div>
+        <div class="menu-button" id="search">Поиск</div>
+        <div class="menu-button" id="profile">Профиль</div>
+    </nav>
+</div>
+
+<div class="big-movie-container">
+    <div class="poster-and-content">
+        <img class="poster" src="../res/<%= movie.poster %>" alt="<%= movie.title %> Poster">
+        <div class="movie-content">
+            <div class="movie-title" id="movie-title"><%= movie.title %> (<%= movie.year %>)</div>
+            <div class="movie-details" id="movie-details">
+                <p>Год производства: <%= movie.year %></p>
+                <p>Страна: <%= movie.country %></p>
+                <p>Режиссер: <%= movie.director %></p>
+                <p>Рейтинг: <%= movie.rating %></p>
+            </div>
+            <div class="movie-description" id="movie-description">
+                <%= movie.description %>
+            </div>
+        </div>
+    </div>
+    <div class="rating-section">
+        <div class="rating-buttons">
+            <span>Оцените:</span>
+            <div id="rating-container"></div>
+        </div>
+        <div class="big-rating">
+            <span>Рейтинг:</span>
+            <div id="rating"><%= movie.rating %></div>
+        </div>
+    </div>
+
+
+    <div class="review-section">
+        <button class="review-button" id="review-button">Написать рецензию</button>
+            <form class="review-form" action="/movie" method="post" id="review-form" style="display: none;">
+                <input class="form-epigraph" type="text" placeholder="Эпиграф">
+                <textarea class="form-text" placeholder="Текст рецензии"></textarea>
+                <div class="error-message" id="errorMessage"></div>
+                <div class="review-buttons">
+                    <button type="button" class="review-form-cancel">Отмена</button>
+                    <button type="submit" class="review-form-accept">Готово</button>
+                </div>
+            </form>
+        <span>Рецензии зрителей</span>
+        <div class="review-container" id="review-container">
+            <% reviews.forEach(review => { %>
+                <div class="review" id="review">
+                    <div class="review-top-bar">
+                        <div class="review-username" id="review-username"><%= review.User.username %></div>
+                        <button class="review-like">🤍</button>
+                    </div>
+                    <div class="review-epigraph" id="review-epigraph"><%= review.reviewEpigraph %></div>
+                    <div class="review-text" id="review-text"><%= review.reviewText %></div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer">
+        <a class="git-button" id="github" href="https://github.com/eyonyann/Course-project-3" target="_blank">GitHub</a>
+    </div>
+</footer>
+
+<script>
+    // Определяем грустный смайлик
+    const sadSmiley = '😞';
+
+    // Функция для обработки события изменения видимости вкладки
+    function handleVisibilityChange() {
+        if (document.hidden) {
+            document.title = sadSmiley + ' Movie Reviews'; // Изменяем заголовок вкладки на грустный смайлик
+        } else {
+            document.title = '😊 Movie Reviews'; // Возвращаем исходный заголовок вкладки
+        }
+    }
+
+    // Добавляем обработчик события изменения видимости вкладки
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    var ratingContainer = document.getElementById('rating-container');
+
+    for (var i = 1; i <= 10; i++) {
+        var button = document.createElement('button');
+        button.classList.add('rating-star');
+        button.textContent = i;
+
+        ratingContainer.appendChild(button);
+    }
+
+    // Получаем ссылки на все кнопки меню
+    const mainButton = document.getElementById('main');
+    const myButton = document.getElementById('favorites');
+    const searchButton = document.getElementById('search');
+    const profileButton = document.getElementById('profile');
+    const gitButton = document.getElementById('github');
+    const signInButton = document.getElementById('signIn');
+
+    // Обработчики событий для кнопок
+    mainButton.addEventListener('click', () => {
+        window.location.href = '/'; // Перенаправляем на главную страницу
+    });
+
+    myButton.addEventListener('click', () => {
+        window.location.href = '/favorites'; // Перенаправляем на страницу "Моё"
+    });
+
+    searchButton.addEventListener('click', () => {
+        window.location.href = '/search'; // Перенаправляем на страницу поиска
+    });
+
+    profileButton.addEventListener('click', () => {
+        window.location.href = '/profile'; // Перенаправляем на страницу входа
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const ratingButtons = document.querySelectorAll('.rating-star');
+        let currentRating = null;
+        const movieId = window.location.pathname.split('/').pop(); // This should be dynamically set based on the movie being rated
+
+        ratingButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                const selectedRating = parseInt(button.textContent);
+                /*const userId = 'YOUR_USER_ID';*/ // Replace this with actual user session ID or similar identifier
+                // Toggle active class
+                if (selectedRating === currentRating) {
+                    button.classList.remove('rating-star-active');
+                    currentRating = selectedRating;
+                } else {
+                    ratingButtons.forEach(btn => btn.classList.remove('rating-star-active'));
+                    button.classList.add('rating-star-active');
+                    currentRating = selectedRating;
+                }
+
+                try {
+                    const response = await fetch('/movie/:id', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ movieId, userRating: currentRating })
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        console.log('Rating updated successfully:', data);
+                        document.getElementById('rating').textContent = data.rating.toFixed(1);
+                    } else {
+                        throw new Error(data.message || 'Failed to rate movie');
+                    }
+                } catch (error) {
+                    console.error('Error submitting rating:', error);
+                }
+            });
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const reviewButton = document.getElementById('review-button');
+        const reviewForm = document.getElementById('review-form');
+        const cancelReviewButton = document.querySelector('.review-form-cancel');
+        const submitReviewButton = document.querySelector('.review-form-accept');
+
+        // Toggle review form visibility
+        reviewButton.addEventListener('click', function() {
+            if (reviewForm.style.display === 'none' || reviewForm.style.display === '') {
+                reviewForm.style.display = 'block';
+            } else {
+                reviewForm.style.display = 'none';
+                reviewForm.reset();  // Reset form fields when closing the form
+            }
+        });
+
+        // Handle review form submission
+        submitReviewButton.addEventListener('click', async function(event) {
+            event.preventDefault(); // Prevent the form from submitting in the traditional way
+            const reviewEpigraph = document.querySelector('.form-epigraph').value;
+            const reviewText = document.querySelector('.form-text').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (reviewEpigraph === "" || reviewText === "") {
+                errorMessage.textContent = 'Все поля должны быть заполнены!';
+                return;
+            }
+
+            try {
+                const response = await fetch('/movie/:id', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        movieId: window.location.pathname.split('/').pop(),
+                        reviewEpigraph,
+                        reviewText
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    console.log('Review submitted successfully:', data.message);
+                    reviewForm.style.display = 'none';  // Close form on successful submission
+                    reviewForm.reset();  // Reset form fields after submission
+                    window.location.reload();
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error submitting review:', error.message);
+            }
+        });
+
+        // Handle review cancellation
+        cancelReviewButton.addEventListener('click', function() {
+            reviewForm.style.display = 'none';
+            reviewForm.reset();  // Reset form fields when cancelling
+            errorMessage.textContent = '';
+        });
+    });
+
+</script>
+
+</body>
+</html>
