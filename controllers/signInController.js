@@ -1,33 +1,24 @@
-const bcrypt = require('bcrypt');
+const path = require('path');
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
+exports.getSignIn = (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'html', 'signIn.html'));
+};
 
-function signInGet(req, res) {
-    res.sendFile(__dirname + '/public/html/home.html');
-}
-async function signInPost(req, res) {
+exports.postSignIn = async (req, res) => {
     const { username, password } = req.body;
-
     try {
         const user = await User.findOne({ where: { username: username } });
-
-        if (user) {
-            const isPasswordValid = await bcrypt.compare(password, user.password);
-
-            if (isPasswordValid) {
-                req.session.user = user.username;
-                req.session.userId = user.id;
-                res.status(200).json({ message: 'Successfully logged in!' });
-            } else {
-                res.status(401).json({ error: 'Incorrect username or password!' });
-            }
+        if (user && await bcrypt.compare(password, user.password)) {
+            req.session.user = user;
+/*            req.session.userId = user.id;*/
+            res.status(200).json({ message: 'Successfully logged in!' });
         } else {
-            res.status(401).json({ error: 'User not found!' });
+            res.status(401).json({ error: 'Incorrect username or password!' });
         }
     } catch (error) {
         console.error('Error signing in:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-}
-
-module.exports = { signInPost, signInGet} ;
+};

@@ -27,11 +27,18 @@
         <input type="text" id="username-box" value="<%= username %>" placeholder="Username">
         <input type="password" id="old-password-box" placeholder="Старый пароль">
         <input type="password" id="new-password-box" placeholder="Новый пароль">
+        <div class="error-message" id="errorMessage"></div>
+        <div class="message" id="message"></div>
         <button type="button" onclick="updateProfile()">Сохранить</button>
+        <button type="button" onclick="logOut()">Выйти</button>
     </form>
 </div>
 
-
+<!--<div class="footer">
+    <footer>
+            <a class="git-button" id="github" href="https://github.com/eyonyann/Course-project-3" target="_blank">GitHub</a>
+    </footer>
+</div>-->
 
 <script>
     // Определяем грустный смайлик
@@ -48,6 +55,8 @@
 
     // Добавляем обработчик события изменения видимости вкладки
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    const errorMessage = document.getElementById('errorMessage');
+    const message = document.getElementById('message');
 
     async function updateProfile() {
         const name = document.getElementById('name-box').value;
@@ -56,27 +65,54 @@
         const newPassword = document.getElementById('new-password-box').value;
 
         try {
-            // Отправляем запрос на сервер для обновления профиля
-            const response = await fetch('/api/updateProfile', {
+            const response = await fetch('/profile', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json'  // Указываем тип контента как JSON
                 },
-                body: JSON.stringify({ name, username, oldPassword, newPassword })
+                body: JSON.stringify({ name, username, oldPassword, newPassword })  // Сериализуем данные в JSON
             });
 
+            const responseData = await response.json(); // Парсим JSON ответ
+
             if (response.ok) {
-                // Если обновление прошло успешно, выводим сообщение об успехе
-                alert('Профиль успешно обновлен!');
+                message.textContent = responseData.message;
+                errorMessage.textContent = '';
             } else {
-                // Если произошла ошибка, выводим сообщение об ошибке
-                throw new Error('Failed to update profile');
+                message.textContent = '';
+                errorMessage.textContent = responseData.error;
             }
         } catch (error) {
             console.error('Failed to update profile:', error);
-            alert('Не удалось обновить профиль');
+            alert('Ошибка соединения или сервера при обновлении профиля');
         }
     }
+
+    async function logOut() {
+        try {
+            const response = await fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                // Успешный выход из системы, перенаправляем на страницу входа
+                window.location.href = '/signIn';
+            } else {
+                // Обработка ошибки
+                console.error('Failed to log out:', responseData.error);
+                alert('Ошибка при выходе из системы');
+            }
+        } catch (error) {
+            console.error('Failed to log out:', error);
+            alert('Ошибка соединения или сервера при выходе из системы');
+        }
+    }
+
     // Получаем ссылки на все кнопки меню
     const mainButton = document.getElementById('main');
     const myButton = document.getElementById('favorites');
@@ -102,7 +138,7 @@
     });
 
     window.addEventListener('DOMContentLoaded', (event) => {
-        fetch('/api/getUserProfile')
+        fetch('/profile')
             .then(response => {
                 if (response.ok) {
                     return response.json();

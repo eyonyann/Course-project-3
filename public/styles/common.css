@@ -41,6 +41,7 @@ nav {
 }
 
 .footer {
+    margin-top: auto;
     background-color: #E9D3A8;
     height: 6vw;
     display: flex;
@@ -75,6 +76,13 @@ nav {
     box-shadow: none;
 }
 
+.error-message {
+    color: #C23939;
+}
+
+.message {
+    color: #39c250;
+}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

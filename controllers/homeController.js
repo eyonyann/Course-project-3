@@ -1,7 +1,5 @@
-function home(req, res) {
-    res.sendFile(__dirname + '/public/html/home.html');
-}
+const path = require('path');
 
-module.exports = {
-    home: home
+exports.home = (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'html', 'home.html'));
 };
