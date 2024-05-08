@@ -4,18 +4,32 @@ const multer = require('multer');
 const bcrypt = require('bcrypt');
 const sequelize = require('./utils/database');
 const movieRoutes = require('./routes/movieRoutes')
+const searchRouter = require('./routes/searchRoute');
 const router = express.Router();
 const User = require('./models/User');
 const Review = require('./models/Review');
+const Rating = require('./models/Rating');
+const Movie = require('./models/Movie');
 
 // Define associations
 User.hasMany(Review, { foreignKey: 'userId' });
 Review.belongsTo(User, { foreignKey: 'userId' });
 
+Movie.hasMany(Review, { foreignKey: 'movieId' });
+Review.belongsTo(Movie, { foreignKey: 'movieId' });
+
+User.hasMany(Rating, { foreignKey: 'userId' });
+Rating.belongsTo(User, { foreignKey: 'userId' });
+
+Movie.hasMany(Rating, { foreignKey: 'movieId' });
+Rating.belongsTo(Movie, { foreignKey: 'movieId' });
+
 
 module.exports = {
     User,
-    Review
+    Review,
+    Rating,
+    Movie
 };
 // Import controllers
 const homeController = require('./controllers/homeController');
@@ -63,6 +77,8 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 
 app.use('/movies', movieRoutes);
+app.use('/search', searchRouter);
+
 
 // Middleware: Check if user is logged in
 function requireLogin(req, res, next) {
@@ -74,10 +90,10 @@ function requireLogin(req, res, next) {
 }
 
 // Routes
-app.get('/', requireLogin, homeController.home);
-app.get('/home', requireLogin, homeController.home);
-app.get('/favorites', requireLogin, favoritesController.favorites);
-app.get('/search', requireLogin, searchController.search);
+app.get('/', requireLogin, homeController.getHome);
+app.get('/home', requireLogin, homeController.getHome);
+app.get('/favorites', requireLogin, favoritesController.getFavorites);
+app.get('/search', requireLogin, searchController.getSearch);
 app.get('/profile', requireLogin, profileController.getProfile);
 app.post('/profile', requireLogin, profileController.postProfile);
 app.get('/signIn', signInController.getSignIn);

@@ -4,18 +4,22 @@ const sequelize = require('../utils/database')
 const Rating = sequelize.define('Rating', {
     userId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: 'users', // 'Movies' is the table name
+            key: 'id',
+        }
     },
     movieId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-            model: 'Movies', // 'Movies' is the table name
+            model: 'movies', // 'Movies' is the table name
             key: 'id',
         }
     },
     rating: {
-        type: Sequelize.DECIMAL(3, 1),
+        type: Sequelize.INTEGER,
         allowNull: false
     }
 }, {

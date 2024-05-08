@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../styles/common.css">
+    <link rel="stylesheet" type="text/css" href="../styles/movie-container.css">
     <link rel="stylesheet" type="text/css" href="../styles/search-container.css">
     <title rel="shortcut icon">😊 Movie Reviews</title>
     <link rel="shortcut icon" href="../res/logo.png" />
@@ -27,6 +28,19 @@
 <!--        <button type="submit">Найти</button>-->
     </form>
 </div>
+
+<div class="movie-container" style="display: flex; flex-wrap: wrap;">
+    <% movies.forEach(movie => { %>
+        <a href="/movie/<%= movie.id %>" class="movie-box">
+            <img src="../res/posters/<%= movie.poster %>" alt="<%= movie.title %>">
+            <div class="movie-info">
+                <div class="movie-title"><%= movie.title %></div>
+                <div class="movie-director"><%= movie.director %></div>
+            </div>
+        </a>
+    <% }); %>
+</div>
+
 <script>
     // Определяем грустный смайлик
     const sadSmiley = '😞';

@@ -22,14 +22,14 @@
 
 <div class="big-movie-container">
     <div class="poster-and-content">
-        <img class="poster" src="../res/<%= movie.poster %>" alt="<%= movie.title %> Poster">
+        <img class="poster" src="../res/posters/<%= movie.poster %>" alt="<%= movie.title %> Poster">
         <div class="movie-content">
             <div class="movie-title" id="movie-title"><%= movie.title %> (<%= movie.year %>)</div>
             <div class="movie-details" id="movie-details">
                 <p>Год производства: <%= movie.year %></p>
                 <p>Страна: <%= movie.country %></p>
                 <p>Режиссер: <%= movie.director %></p>
-                <p>Рейтинг: <%= movie.rating %></p>
+                <p>Рейтинг: <%= parseFloat(movie.rating).toFixed(1) %></p>
             </div>
             <div class="movie-description" id="movie-description">
                 <%= movie.description %>
@@ -43,7 +43,7 @@
         </div>
         <div class="big-rating">
             <span>Рейтинг:</span>
-            <div id="rating"><%= movie.rating %></div>
+            <div id="rating"><%= parseFloat(movie.rating).toFixed(1) %></div>
         </div>
     </div>
 

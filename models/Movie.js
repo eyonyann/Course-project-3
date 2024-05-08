@@ -25,7 +25,7 @@ const Movie = sequelize.define('Movie', {
         type: Sequelize.TEXT
     },
     rating: {
-        type: Sequelize.DECIMAL(3, 1)
+        type: Sequelize.DECIMAL(13, 10)
     },
     countOfRatings: {
         type: Sequelize.INTEGER
