@@ -145,8 +145,16 @@
 
                 reader.onload = function(e) {
                     imageData = e.target.result;
-                    const imageElement = document.createElement('img');
+                    let imageElement = document.createElement('img');
+                    if (!imageElement) {
+                        imageElement = document.createElement('img');
+                        uploadSection.appendChild(imageElement);
+                    }
                     imageElement.src = e.target.result;
+                    imageElement.style.cursor = 'pointer'; // Change cursor to pointer when over the image
+                    imageElement.onclick = function() { // Add click event to trigger file input
+                        fileInput.click();
+                    };
                     uploadSection.innerHTML = ''; // Очищаем секцию и добавляем изображение
                     uploadSection.appendChild(imageElement);
                 };
@@ -178,13 +186,13 @@
                     if (uploadSection.querySelector('img') === null) {
                         errorMessage.textContent = 'Загрузите постер.';
                     }
-                    if (!/^[А-Яа-я][а-я]*(\s[А-Яа-я][а-я]*)*$/.test(title)) {
-                        errorMessage.textContent += 'Название должно начинаться с большой буквы. ';
+                    if (!/^[А-Я\d][а-я\d\s,]*(\s[А-Я\d][а-я\d\s,]*)*$/.test(title)) {
+                        errorMessage.textContent += 'Название должно начинаться с большой буквы и может содержать цифры. ';
                     }
                     if (!/^[А-Я][а-я]*\s[А-Я][а-я]*(\s[А-Я][а-я]*)*$/.test(director)) {
                         errorMessage.textContent += 'Режиссер должен быть указан как минимум двумя словами на русском, каждое с большой буквы. ';
                     }
-                    if (!/^[А-Я][а-я]*(\s[А-Я][а-я]*)*$/.test(country)) {
+                    if (!/^[А-Я][а-я\s,]*(\s[А-Я][а-я\s,]*)*$/.test(country)) {
                         errorMessage.textContent += 'Страна должна начинаться с большой буквы. ';
                     }
                     if (!/^\d{4}$/.test(year) || year < 1800 || year >= 2024) {
@@ -214,8 +222,7 @@
                             });
 
                             if (response.ok) {
-                                // Если сохранение успешно, выполните необходимые действия
-                                window.location.href = '/success'; // Например, перенаправление на страницу успеха
+
                             } else {
                                 // Если сохранение не удалось, отобразите сообщение об ошибке
                                 errorMessage.textContent = formData.size ;
