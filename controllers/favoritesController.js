@@ -52,7 +52,10 @@ exports.getFavorites = async (req, res) => {
             }
         });
         // Serve the HTML file along with the movies data
-        res.render(path.join(__dirname, '..', 'public', 'html', 'favorites.ejs'), { movies: movies });
+        res.render(path.join(__dirname, '..', 'public', 'html', 'favorites.ejs'), {
+            movies: movies,
+            session: req.session
+        });
     } catch (error) {
         console.error('Failed to fetch movies:', error);
         res.sendStatus(500);

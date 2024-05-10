@@ -5,7 +5,10 @@ const bcrypt = require('bcrypt');
 const sequelize = require('./utils/database');
 const movieRoutes = require('./routes/movieRoutes')
 const searchRouter = require('./routes/searchRoute');
+const bodyParser = require('body-parser');
 const router = express.Router();
+
+
 const User = require('./models/User');
 const Review = require('./models/Review');
 const Rating = require('./models/Rating');
@@ -40,6 +43,7 @@ const signInController = require('./controllers/signInController');
 const signUpController = require('./controllers/signUpController');
 const logoutController = require('./controllers/logoutController');
 const movieController = require('./controllers/movieController');
+const panelController = require('./controllers/panelController');
 
 // Create Express application
 const app = express();
@@ -79,6 +83,12 @@ app.use(express.json());
 app.use('/movies', movieRoutes);
 app.use('/search', searchRouter);
 
+app.use(bodyParser.json({ limit: '1000mb' }));
+app.use(bodyParser.urlencoded({ limit: '1000mb', extended: true }));
+
+
+
+
 
 // Middleware: Check if user is logged in
 function requireLogin(req, res, next) {
@@ -96,15 +106,20 @@ app.get('/favorites', requireLogin, favoritesController.getFavorites);
 app.get('/search', requireLogin, searchController.getSearch);
 app.get('/profile', requireLogin, profileController.getProfile);
 app.post('/profile', requireLogin, profileController.postProfile);
+app.get('/panel', requireLogin, panelController.getPanel);
+app.post('/panel', upload.single('poster'), panelController.postPanel);
+
+
 app.get('/signIn', signInController.getSignIn);
 app.post('/signIn', upload.none(), signInController.postSignIn);
 app.get('/signUp', signUpController.getSignUp);
 app.post('/signUp', upload.none(), signUpController.postSignUp);
 app.post('/logout', upload.none(), logoutController.postLogout);
+app.get('/movie/:id', requireLogin,  movieController.getMovieDetails);
 
 // Movie route should be added to the app, not the router
-app.get('/movie/:id', movieController.getMovieDetails);
-app.post('/movie/:id', movieController.postMovieDetails);
+app.get('/movie/:id', requireLogin,  movieController.getMovieDetails);
+app.post('/movie/:id', upload.none(), movieController.postMovieDetails);
 
 // Start the server
 start();

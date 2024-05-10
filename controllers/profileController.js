@@ -14,7 +14,8 @@ exports.getProfile = async (req, res) => {
 
         res.render(path.join(__dirname, '..', 'public', 'html', 'profile.ejs'), {
             name: user.name,
-            username: user.username
+            username: user.username,
+            session: req.session
         });
     } catch (error) {
         console.error('Failed to load profile:', error);

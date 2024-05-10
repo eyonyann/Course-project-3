@@ -27,7 +27,8 @@ exports.getMovieDetails = async (req, res) => {
 
         res.render(path.join(__dirname, '..', 'public', 'html', 'movie.ejs'), {
             movie: movie,
-            reviews: reviews
+            reviews: reviews,
+            session: req.session
         });
     } catch (error) {
         console.error('Error fetching movie details:', error);

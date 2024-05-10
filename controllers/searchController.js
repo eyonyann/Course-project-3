@@ -13,11 +13,14 @@ exports.getSearch = async (req, res) => {
                     [Op.like]: `%${searchQuery}%` // Ищем название, содержащее введенный запрос
                 }
             },
-            attributes: ['id', 'title', 'director', 'poster'] // Указываем атрибуты для выборки
+            attributes: ['id', 'title', 'director', 'poster']
         });
 
         // Отправляем шаблон и данные результатов поиска
-        res.render(path.join(__dirname, '..', 'public', 'html', 'search.ejs'), { movies: movies });
+        res.render(path.join(__dirname, '..', 'public', 'html', 'search.ejs'), {
+            movies: movies,
+            session: req.session
+        });
     } catch (error) {
         console.error('Failed to search movies:', error);
         res.sendStatus(500);

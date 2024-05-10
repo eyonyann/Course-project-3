@@ -15,6 +15,9 @@
     <nav>
         <div class="menu-button" id="main">Главное</div>
         <div class="menu-button" id="favorites">Моё</div>
+        <% if (session.user && session.user.id === 1) { %>
+            <div class="menu-button" id="panel">Панель</div>
+        <% } %>
         <div class="menu-button" id="search">Поиск</div>
         <div class="menu-button active" id="profile">Профиль</div>
     </nav>
@@ -113,28 +116,33 @@
         }
     }
 
-    // Получаем ссылки на все кнопки меню
     const mainButton = document.getElementById('main');
     const myButton = document.getElementById('favorites');
+    const panelButton = document.getElementById('panel');
     const searchButton = document.getElementById('search');
     const profileButton = document.getElementById('profile');
+    const gitButton = document.getElementById('github');
     const signInButton = document.getElementById('signIn');
 
     // Обработчики событий для кнопок
     mainButton.addEventListener('click', () => {
-        window.location.href = '/'; // Перенаправляем на главную страницу
+        window.location.href = '/';
     });
 
     myButton.addEventListener('click', () => {
-        window.location.href = '/favorites'; // Перенаправляем на страницу "Моё"
+        window.location.href = '/favorites';
+    });
+
+    panelButton.addEventListener('click', () => {
+        window.location.href = '/panel';
     });
 
     searchButton.addEventListener('click', () => {
-        window.location.href = '/search'; // Перенаправляем на страницу поиска
+        window.location.href = '/search';
     });
 
     profileButton.addEventListener('click', () => {
-        window.location.href = '/profile'; // Перенаправляем на страницу входа
+        window.location.href = '/profile';
     });
 
     window.addEventListener('DOMContentLoaded', (event) => {
