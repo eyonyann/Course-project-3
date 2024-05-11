@@ -13,8 +13,7 @@ exports.getProfile = async (req, res) => {
         }
 
         res.render(path.join(__dirname, '..', 'public', 'html', 'profile.ejs'), {
-            name: user.name,
-            username: user.username,
+            user: user,
             session: req.session
         });
     } catch (error) {
@@ -88,3 +87,5 @@ exports.postProfile = async (req, res) => {
         res.status(200).json({ message: 'Нет изменений для обновления.' });
     }
 };
+
+

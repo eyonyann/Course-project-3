@@ -13,9 +13,9 @@ exports.postSignIn = async (req, res) => {
         if (user && await bcrypt.compare(password, user.password)) {
             req.session.user = user;
 /*            req.session.userId = user.id;*/
-            res.status(200).json({ message: 'Successfully logged in!' });
+            res.status(200).json({ message: 'Успешный вход!' });
         } else {
-            res.status(401).json({ error: 'Incorrect username or password!' });
+            res.status(401).json({ error: 'Неправильный юзернейм или пароль!' });
         }
     } catch (error) {
         console.error('Error signing in:', error);

@@ -10,13 +10,14 @@
 </head>
 <body>
 
+
 <div class="top-bar">
     <div class="logo">映画批評</div>
     <nav>
-        <div class="menu-button">Главное</div>
-        <div class="menu-button">Моё</div>
-        <div class="menu-button">Поиск</div>
-        <div class="menu-button active">Войти</div>
+        <button class="menu-button" id="main" onclick="navigateTo('/')">Главное</button>
+        <button class="menu-button" id="favorites" onclick="navigateTo('/favorites')">Моё</button>
+        <button class="menu-button" id="search" onclick="navigateTo('/search')">Поиск</button>
+        <button class="menu-button active" id="signUp" onclick="navigateTo('/signUp')">Регистрация</button>
     </nav>
 </div>
 
@@ -31,6 +32,12 @@
     </form>
 </div>
 
+<footer>
+    <div class="footer">
+        <a class="git-button" id="github" href="https://github.com/eyonyann/Course-project-3" target="_blank">GitHub</a>
+    </div>
+</footer>
+
 <script>
     // Определяем грустный смайлик
     const sadSmiley = '😞';
@@ -43,6 +50,11 @@
             document.title = '😊 Movie Reviews'; // Возвращаем исходный заголовок вкладки
         }
     }
+
+    function navigateTo(url) {
+        window.location.href = url;
+    }
+
 
     // Добавляем обработчик события изменения видимости вкладки
     document.addEventListener('visibilitychange', handleVisibilityChange);

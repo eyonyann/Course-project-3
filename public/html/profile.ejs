@@ -26,22 +26,27 @@
 
 <div class="profile-container">
     <form id="profileForm">
-        <input type="text" id="name-box" value="<%= name %>" placeholder="Фамилия Имя">
-        <input type="text" id="username-box" value="<%= username %>" placeholder="Username">
+        <input type="text" id="name-box" value="<%= user.name %>" placeholder="Фамилия Имя">
+        <input type="text" id="username-box" value="<%= user.username %>" placeholder="Username">
         <input type="password" id="old-password-box" placeholder="Старый пароль">
         <input type="password" id="new-password-box" placeholder="Новый пароль">
         <div class="error-message" id="errorMessage"></div>
         <div class="message" id="message"></div>
-        <button type="button" onclick="updateProfile()">Сохранить</button>
-        <button type="button" onclick="logOut()">Выйти</button>
+        <button class="default-button" type="button" onclick="updateProfile()">Сохранить</button>
+        <button class="text-button" type="button" onclick="logOut()">Выйти</button>
+        <% if (session.user && session.user.id !== 1) { %>
+            <div class="edit-buttons">
+                <button class="text-button" type="button" onclick="deleteAccount()">Удалить аккаунт</button>
+            </div>
+        <% } %>
     </form>
 </div>
 
-<!--<div class="footer">
-    <footer>
-            <a class="git-button" id="github" href="https://github.com/eyonyann/Course-project-3" target="_blank">GitHub</a>
-    </footer>
-</div>-->
+<footer>
+    <div class="footer">
+        <a class="git-button" id="github" href="https://github.com/eyonyann/Course-project-3" target="_blank">GitHub</a>
+    </div>
+</footer>
 
 <script>
     // Определяем грустный смайлик
@@ -119,6 +124,38 @@
     function navigateTo(url) {
         window.location.href = url;
     }
+
+    async function deleteAccount() {
+        // Запрос на подтверждение удаления аккаунта
+        const confirmation = confirm("Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.");
+
+        if (confirmation) {
+            try {
+                const response = await fetch('/deleteAccount', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const responseData = await response.json();
+
+                if (response.ok) {
+                    // Успешное удаление аккаунта, перенаправляем на страницу входа
+                    window.location.href = '/signIn';
+                } else {
+                    // Обработка ошибки
+                    console.error('Failed to delete account:', responseData.error);
+                    alert('Ошибка при удалении аккаунта');
+                }
+            } catch (error) {
+                console.error('Failed to delete account:', error);
+                alert('Ошибка соединения или сервера при удалении аккаунта');
+            }
+        }
+    }
+
+
 
 
     window.addEventListener('DOMContentLoaded', (event) => {

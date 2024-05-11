@@ -45,6 +45,7 @@ const logoutController = require('./controllers/logoutController');
 const movieController = require('./controllers/movieController');
 const panelController = require('./controllers/panelController');
 const movieEditController = require('./controllers/movieEditController');
+const deleteAccountController = require('./controllers/deleteAccountController')
 
 // Create Express application
 const app = express();
@@ -102,13 +103,24 @@ function requireLogin(req, res, next) {
     }
 }
 
+function requireAdminLogin(req, res, next) {
+    if (req.session.user && req.session.user.id !== 1) {
+        res.redirect('/signIn');
+    } else {
+        next();
+    }
+}
+
 // Routes
 app.get('/', requireLogin, homeController.getHome);
 app.get('/home', requireLogin, homeController.getHome);
 app.get('/favorites', requireLogin, favoritesController.getFavorites);
 app.get('/search', requireLogin, searchController.getSearch);
+
 app.get('/profile', requireLogin, profileController.getProfile);
 app.post('/profile', requireLogin, profileController.postProfile);
+app.post('/deleteAccount', upload.none(), deleteAccountController.deleteAccount);
+
 app.get('/panel', requireLogin, panelController.getPanel);
 app.post('/panel', upload.single('poster'), panelController.postPanel);
 
@@ -123,9 +135,9 @@ app.post('/logout', upload.none(), logoutController.postLogout);
 // Movie route should be added to the app, not the router
 app.get('/movie/:id', requireLogin,  movieController.getMovieDetails);
 app.post('/movie/:id', upload.none(), movieController.postMovieDetails);
-app.delete('/movie/:id', movieController.deleteMovie);
+app.delete('/movie/:id', requireAdminLogin, movieController.deleteMovie);
 
-app.get('/movie/:id/edit', requireLogin, movieEditController.getMovieEditDetails);
+app.get('/movie/:id/edit', requireAdminLogin, requireLogin, movieEditController.getMovieEditDetails);
 app.post('/movie/:id/edit', upload.none(), movieEditController.postMovieEditDetails);
 
 // Start the server

@@ -9,4 +9,5 @@
     align-items: flex-start; /* align items to the start of the flex container */
     flex-direction: column;
     place-items: center;
+    margin-bottom: 150px;
 }

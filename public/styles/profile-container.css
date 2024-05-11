@@ -1,13 +1,14 @@
 .profile-container {
+    margin-top: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20vh;
     padding: 20px;
+    margin-bottom: 250px;
 }
 
 .profile-container form {
-    height: 2vw;
+    height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,8 +34,8 @@
 }
 
 
-.profile-container button {
-    margin-top: 2vw;
+.default-button {
+    margin-top: 20px;
     justify-content: center;
     padding: 10px 20px;
     font-size: 40px;
@@ -43,6 +44,21 @@
     border: none;
     border-radius: 15px;
     color: #ffeecf;
+    cursor: pointer;
+    transition: color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.text-button {
+    color: #C23939;
+    background-color: #ffffff;
+    margin-top: 5px;
+    justify-content: center;
+    padding: 5px 15px;
+    font-size: 25px;
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
     cursor: pointer;
     transition: color 0.3s ease, box-shadow 0.3s ease;
 }
