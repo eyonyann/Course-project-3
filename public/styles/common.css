@@ -28,6 +28,8 @@ nav {
     margin-top: 20px;
 }
 .menu-button {
+    background-color: #ffeecf;
+    border: none;
     font-size: 40px;
     color: #C23939;
     font-weight: bold;

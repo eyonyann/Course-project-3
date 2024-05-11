@@ -3,6 +3,7 @@ const Movie = require('../models/Movie');
 const Rating = require('../models/Rating');
 const Review = require('../models/Review');
 const User = require('../models/User');
+const fs = require('fs/promises');
 
 
 
@@ -105,6 +106,45 @@ exports.postMovieDetails = async (req, res) => {
         res.send({ success: true, rating: movie.rating, movieId: movie.id, message: "Rating and/or review updated successfully" });
     } catch (error) {
         console.error('Error updating movie details:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+exports.deleteMovie = async (req, res) => {
+    try {
+        const movieId = req.params.id;
+
+        const movie = await Movie.findByPk(movieId);
+
+        if (!movie) {
+            res.status(404).send('Movie not found');
+            return;
+        }
+
+        if (movie.poster) {
+            const posterPath = path.join(__dirname, '..', 'public', 'res', 'posters', movie.poster);
+            await fs.unlink(posterPath);
+        }
+
+        // Удаление всех рейтингов, связанных с фильмом
+        await Rating.destroy({
+            where: { movieId: movieId }
+        });
+
+        // Удаление всех рецензий, связанных с фильмом
+        await Review.destroy({
+            where: { movieId: movieId }
+        });
+
+        // Удаление самого фильма
+        await Movie.destroy({
+            where: { id: movieId }
+        });
+
+        res.sendStatus(200); // Отправляем успешный статус ответа
+    } catch (error) {
+        console.error('Error deleting movie:', error);
         res.status(500).send('Internal Server Error');
     }
 };

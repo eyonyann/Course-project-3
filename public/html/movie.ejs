@@ -14,13 +14,13 @@
 <div class="top-bar">
     <div class="logo">映画批評</div>
     <nav>
-        <div class="menu-button" id="main">Главное</div>
-        <div class="menu-button" id="favorites">Моё</div>
+        <button class="menu-button" id="main" onclick="navigateTo('/')">Главное</button>
+        <button class="menu-button" id="favorites" onclick="navigateTo('/favorites')">Моё</button>
         <% if (session.user && session.user.id === 1) { %>
-            <div class="menu-button" id="panel">Панель</div>
+            <button class="menu-button" id="panel" onclick="navigateTo('/panel')">Панель</button>
         <% } %>
-        <div class="menu-button" id="search">Поиск</div>
-        <div class="menu-button" id="profile">Профиль</div>
+        <button class="menu-button" id="search" onclick="navigateTo('/search')">Поиск</button>
+        <button class="menu-button" id="profile" onclick="navigateTo('/profile')">Профиль</button>
     </nav>
 </div>
 
@@ -40,6 +40,13 @@
             </div>
         </div>
     </div>
+    <% if (session.user && session.user.id === 1) { %>
+        <div class="edit-buttons">
+            <button class="delete-button" onclick="confirmDelete(<%= movie.id %>)">Удалить</button>
+            <button class="edit-button" onclick="editMovie(<%= movie.id %>)">Редактировать</button>
+        </div>
+    <% } %>
+
     <div class="rating-section">
         <div class="rating-buttons">
             <span>Оцените:</span>
@@ -110,34 +117,10 @@
         ratingContainer.appendChild(button);
     }
 
-    const mainButton = document.getElementById('main');
-    const myButton = document.getElementById('favorites');
-    const panelButton = document.getElementById('panel');
-    const searchButton = document.getElementById('search');
-    const profileButton = document.getElementById('profile');
-    const gitButton = document.getElementById('github');
-    const signInButton = document.getElementById('signIn');
+    function navigateTo(url) {
+        window.location.href = url;
+    }
 
-    // Обработчики событий для кнопок
-    mainButton.addEventListener('click', () => {
-        window.location.href = '/';
-    });
-
-    myButton.addEventListener('click', () => {
-        window.location.href = '/favorites';
-    });
-
-    panelButton.addEventListener('click', () => {
-        window.location.href = '/panel';
-    });
-
-    searchButton.addEventListener('click', () => {
-        window.location.href = '/search';
-    });
-
-    profileButton.addEventListener('click', () => {
-        window.location.href = '/profile';
-    });
 
     document.addEventListener('DOMContentLoaded', function() {
         const ratingButtons = document.querySelectorAll('.rating-star');
@@ -244,6 +227,36 @@
             errorMessage.textContent = '';
         });
     });
+
+    function editMovie(movieId) {
+        window.location.href = `/movie/${movieId}/edit`;
+    }
+
+    function confirmDelete(movieId) {
+        if (confirm("Точно ли вы хотите удалить фильм?")) {
+            // Если пользователь подтвердил удаление
+            deleteMovie(movieId);
+        }
+    }
+
+    async function deleteMovie(movieId) {
+        try {
+            const response = await fetch(`/movie/${movieId}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                // Перенаправление на главную страницу после успешного удаления
+                window.location.href = '/';
+            } else {
+                // Обработка ошибки удаления фильма
+                console.error('Failed to delete movie');
+                alert('Не удалось удалить фильм');
+            }
+        } catch (error) {
+            console.error('Error deleting movie:', error);
+            alert('Произошла ошибка при удалении фильма');
+        }
+    }
 
 </script>
 

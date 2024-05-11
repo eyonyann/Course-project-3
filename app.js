@@ -44,6 +44,7 @@ const signUpController = require('./controllers/signUpController');
 const logoutController = require('./controllers/logoutController');
 const movieController = require('./controllers/movieController');
 const panelController = require('./controllers/panelController');
+const movieEditController = require('./controllers/movieEditController');
 
 // Create Express application
 const app = express();
@@ -83,6 +84,8 @@ app.use(express.json());
 app.use('/movies', movieRoutes);
 app.use('/search', searchRouter);
 
+
+
 app.use(bodyParser.json({ limit: '1000mb' }));
 app.use(bodyParser.urlencoded({ limit: '1000mb', extended: true }));
 
@@ -115,11 +118,15 @@ app.post('/signIn', upload.none(), signInController.postSignIn);
 app.get('/signUp', signUpController.getSignUp);
 app.post('/signUp', upload.none(), signUpController.postSignUp);
 app.post('/logout', upload.none(), logoutController.postLogout);
-app.get('/movie/:id', requireLogin,  movieController.getMovieDetails);
+
 
 // Movie route should be added to the app, not the router
 app.get('/movie/:id', requireLogin,  movieController.getMovieDetails);
 app.post('/movie/:id', upload.none(), movieController.postMovieDetails);
+app.delete('/movie/:id', movieController.deleteMovie);
+
+app.get('/movie/:id/edit', requireLogin, movieEditController.getMovieEditDetails);
+app.post('/movie/:id/edit', upload.none(), movieEditController.postMovieEditDetails);
 
 // Start the server
 start();

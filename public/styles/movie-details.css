@@ -54,6 +54,36 @@
     line-height: 1.5; /* line height for readability */
 }
 
+.edit-buttons {
+    margin-top: 20px;
+
+}
+.edit-button {
+
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #ffffff; /* Button background color */
+    border: none;
+    border-radius: 10px;
+    color: #353535;
+    cursor: pointer;
+}
+
+.delete-button{
+    margin-right: 35px;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #ffffff; /* Button background color */
+    border: none;
+    border-radius: 10px;
+    color: #353535;
+    cursor: pointer;
+}
+
 .rating-section {
     margin-top: 50px;
     color: #353535;
@@ -181,7 +211,7 @@
     cursor: pointer;
 }
 
-.review-form-accept:hover, .review-form-cancel:hover {
+.review-form-accept:hover, .review-form-cancel:hover, .edit-button:hover, .delete-button:hover {
     color: #ffeecf;
     background-color: #C23939;
     box-shadow: 0 0 0 3px #C23939;

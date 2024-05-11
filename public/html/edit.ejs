@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../styles/common.css">
-    <link rel="stylesheet" type="text/css" href="../styles/add-movie-container.css">
-    <link rel="stylesheet" type="text/css" href="../styles/users-container.css">
-    <link rel="stylesheet" type="text/css" href="../styles/panel-container.css">
-    <link rel="stylesheet" type="text/css" href="../styles/movie-details.css">
+    <link rel="stylesheet" type="text/css" href="/styles/common.css">
+    <link rel="stylesheet" type="text/css" href="/styles/add-movie-container.css">
+    <link rel="stylesheet" type="text/css" href="/styles/users-container.css">
+    <link rel="stylesheet" type="text/css" href="/styles/panel-container.css">
+    <link rel="stylesheet" type="text/css" href="/styles/movie-details.css">
     <title rel="shortcut icon">😊 Movie Reviews</title>
     <link rel="shortcut icon" href="../res/logo.png" />
 </head>
@@ -20,7 +20,7 @@
         <button class="menu-button" id="main" onclick="navigateTo('/')">Главное</button>
         <button class="menu-button" id="favorites" onclick="navigateTo('/favorites')">Моё</button>
         <% if (session.user && session.user.id === 1) { %>
-            <button class="menu-button active" id="panel" onclick="navigateTo('/panel')">Панель</button>
+            <button class="menu-button" id="panel" onclick="navigateTo('/panel')">Панель</button>
         <% } %>
         <button class="menu-button" id="search" onclick="navigateTo('/search')">Поиск</button>
         <button class="menu-button" id="profile" onclick="navigateTo('/profile')">Профиль</button>
@@ -28,56 +28,29 @@
 </div>
 
 <div class="panel-container">
-    <div class="statistic-container">
-        <h2 class="statistic-name">Ваша статистика</h2>
-        <div class="statistic-information">
-        </div>
-    </div>
     <div class="add-movie-container">
-        <h2 class="add-movie-name">Добавить фильм</h2>
+        <h2 class="add-movie-name">Изменить фильм</h2>
         <form class="movie-form-add">
             <div class="movie-form-main-information">
                 <div class="movie-form-upload-section" id="upload-section">
-                    <span class="movie-form-drag-n-drop-text" id="js-drag-n-drop">
-                        Загрузите постер в формате jpg
-                    </span>
+                    <img src="http://localhost:3000/res/posters/<%= movie.poster %>" id="moviePoster" style="cursor: pointer;" onclick="document.getElementById('file-input').click();">
+                    <!-- Добавляем скрытый файловый ввод -->
                     <input type="file" name="poster" id="file-input" accept="image/jpeg" style="display: none;">
-                    <button type="button" class="movie-form-accept-upload-image" onclick="document.getElementById('file-input').click();">
-                        Загрузить
-                    </button>
                 </div>
                 <div class="movie-form-add-text">
-                    <input class="movie-form-title" type="text" placeholder="Название">
-                    <input class="movie-form-director" type="text" placeholder="Режиссер">
-                    <input class="movie-form-country" type="text" placeholder="Страна">
-                    <input class="movie-form-year" type="text" placeholder="Год создания">
+                    <input class="movie-form-title" type="text" value="<%= movie.title %>" placeholder="Название">
+                    <input class="movie-form-director" type="text" value="<%= movie.director %>" placeholder="Режиссер">
+                    <input class="movie-form-country" type="text" value="<%= movie.country %>" placeholder="Страна">
+                    <input class="movie-form-year" type="text" value="<%= movie.year %>" placeholder="Год создания">
                 </div>
             </div>
-            <textarea class="movie-form-description" placeholder="Текст описания(синопсиса)"></textarea>
+            <textarea class="movie-form-description"  placeholder="Текст описания(синопсиса)"><%= movie.description %></textarea>
             <div class="error-message" id="errorMessage"></div>
             <div class="movie-form-buttons">
                 <button type="button" class="movie-form-cancel">Отмена</button>
                 <button type="submit" class="movie-form-accept">Готово</button>
             </div>
         </form>
-
-    </div>
-    <div class="users-container">
-        <h2 class="users-name">Пользователи</h2>
-        <table class="users-table">
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Фамилия Имя</th>
-            </tr>
-            <% users.forEach(function(user) { %>
-                <tr>
-                    <td><%= user.id %></td>
-                    <td><%= user.username %></td>
-                    <td><%= user.name %></td>
-                </tr>
-            <% }); %>
-        </table>
     </div>
 </div>
 
@@ -192,7 +165,7 @@
 
 
                             // Отправка данных и изображения на сервер
-                            const response = await fetch('/panel', {
+                            const response = await fetch('/movie/<%= movie.id %>/edit', {
                                 method: 'POST',
                                 body: formData
                             });
@@ -217,17 +190,9 @@
 
 
         document.querySelector('.movie-form-cancel').addEventListener('click', function() {
-            form.reset();
-            uploadSection.innerHTML = `<span class="movie-form-drag-n-drop-text" id="js-drag-n-drop">
-            Загрузите постер в формате jpg
-        </span>
-        <button class="movie-form-accept-upload-image" onclick="document.getElementById('file-input').click();">
-            Загрузить
-        </button>`;
+            window.location.href = `/movie/<%= movie.poster %>`;
         });
     });
-
-
 </script>
 
 </body>

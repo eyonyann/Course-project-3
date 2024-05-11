@@ -14,13 +14,13 @@
 <div class="top-bar">
     <div class="logo">映画批評</div>
     <nav>
-        <div class="menu-button" id="main">Главное</div>
-        <div class="menu-button" id="favorites">Моё</div>
+        <button class="menu-button" id="main" onclick="navigateTo('/')">Главное</button>
+        <button class="menu-button" id="favorites" onclick="navigateTo('/favorites')">Моё</button>
         <% if (session.user && session.user.id === 1) { %>
-            <div class="menu-button" id="panel">Панель</div>
+            <button class="menu-button" id="panel" onclick="navigateTo('/panel')">Панель</button>
         <% } %>
-        <div class="menu-button active" id="search">Поиск</div>
-        <div class="menu-button" id="profile">Профиль</div>
+        <button class="menu-button active" id="search" onclick="navigateTo('/search')">Поиск</button>
+        <button class="menu-button" id="profile" onclick="navigateTo('/profile')">Профиль</button>
     </nav>
 </div>
 
@@ -59,38 +59,11 @@
 
     // Добавляем обработчик события изменения видимости вкладки
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    const mainButton = document.getElementById('main');
-    const myButton = document.getElementById('favorites');
-    const panelButton = document.getElementById('panel');
-    const searchButton = document.getElementById('search');
-    const profileButton = document.getElementById('profile');
-    const gitButton = document.getElementById('github');
-    const signInButton = document.getElementById('signIn');
 
-    // Обработчики событий для кнопок
-    mainButton.addEventListener('click', () => {
-        window.location.href = '/';
-    });
+    function navigateTo(url) {
+        window.location.href = url;
+    }
 
-    myButton.addEventListener('click', () => {
-        window.location.href = '/favorites';
-    });
-
-    panelButton.addEventListener('click', () => {
-        window.location.href = '/panel';
-    });
-
-    searchButton.addEventListener('click', () => {
-        window.location.href = '/search';
-    });
-
-    profileButton.addEventListener('click', () => {
-        window.location.href = '/profile';
-    });
-
-    window.onload = function() {
-        document.getElementById('search-box').focus();
-    };
 </script>
 </body>
 </html>
