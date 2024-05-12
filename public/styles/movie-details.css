@@ -237,7 +237,7 @@
     box-sizing: border-box;
 }
 
-.review-button:hover {
+.review-form-button:hover {
     background-color: #C23939;
     color: #ffeecf;
 }
