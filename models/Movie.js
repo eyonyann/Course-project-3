@@ -32,6 +32,10 @@ const Movie = sequelize.define('Movie', {
     },
     poster: {
         type: Sequelize.STRING
+    },
+    dateAdded: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
     }
 }, {
     timestamps: false

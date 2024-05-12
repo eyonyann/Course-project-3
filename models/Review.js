@@ -26,6 +26,10 @@ const Review = sequelize.define('Review', {
         type: Sequelize.TEXT,
         allowNull: false
     },
+    dateAdded: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW // Устанавливаем значение по умолчанию как текущую дату и время
+    }
 }, {
     timestamps: false
 });
