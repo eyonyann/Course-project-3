@@ -60,7 +60,7 @@
 
 
     <div class="review-section">
-        <% if (userReview) { %>
+        <% if (userReview && userReview.movieId == movie.id) { %>
             <button class="review-button" id="review-button">Изменить рецензию</button>
             <form class="review-form" action="/movie" method="post" id="review-form" style="display: none;">
                 <input class="form-epigraph" type="text" placeholder="Эпиграф" value="<%= userReview.reviewEpigraph %>">
@@ -84,22 +84,25 @@
                 </form>
         <% } %>
         <span>Рецензии зрителей</span>
-        <div class="review-container" id="review-container">
-            <% reviews.forEach(review => { %>
-                <div class="review" id="review">
-                    <div class="review-top-bar">
-                        <div class="review-username" id="review-username"><%= review.User.username %></div>
+            <div class="review-container" id="review-container">
+                <% reviews.forEach(review => { %>
+                    <div class="review" id="review<%= review.id %>">
+                        <div class="review-top-bar">
+                            <div class="review-username" id="review-username"><%= review.User.username %></div>
+                            <% if (session.user && (session.user.id === 1 || session.user.id === review.userId)) { %>
+                                <button class="review-delete" onclick="deleteReview(<%= movie.id %> , <%= review.userId %>)">Удалить</button>
+                            <% } %>
+                            <button class="review-like">🤍</button>
+                        </div>
+                        <div class="review-epigraph" id="review-epigraph"><%= review.reviewEpigraph %></div>
+                        <div class="review-text" id="review-text<%= review.id %>" data-full-text="<%= review.reviewText %>"><%= review.reviewText.substring(0, 500) %></div>
 
-                        <% if (session.user && (session.user.id === 1 || session.user.id === review.userId)) { %>
-                            <button class="review-delete" id="review-delete" onclick="deleteReview(<%= movie.id %> , <%= review.userId %>)">Удалить</button>
-                        <% } %>
-                        <button class="review-like">🤍</button>
+                        <button class="review-text-show-more-button" onclick="showMore(<%= JSON.stringify(review.reviewText) %>)">Показать еще</button>
                     </div>
-                    <div class="review-epigraph" id="review-epigraph"><%= review.reviewEpigraph %></div>
-                    <div class="review-text" id="review-text"><%= review.reviewText %></div>
-                </div>
-            <% }); %>
-        </div>
+                <% }); %>
+            </div>
+
+
     </div>
 </div>
 
@@ -293,6 +296,22 @@
             alert('Произошла ошибка при удалении рецензии');
         }
     }
+
+    function showMore(fullText) {
+        // Get the element containing the truncated text
+        var textElement = document.querySelector('.review-text');
+
+        // Replace the truncated text with the full text
+        textElement.innerText = fullText;
+
+        // Hide the "Показать еще" button
+        var showMoreButton = document.querySelector('.review-text-show-more-button');
+        showMoreButton.style.display = 'none';
+    }
+
+
+
+
 
 
 

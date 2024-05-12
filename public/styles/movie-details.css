@@ -286,6 +286,18 @@
     cursor: pointer;
 }
 
+.review-text-show-more-button {
+    margin-left: auto;
+    margin-right: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #ffeecf; /* Button background color */
+    border: none;
+    border-radius: 15px;
+    color: #353535;
+    cursor: pointer;
+}
+
 .review-like:hover, .review-delete:hover {
     transition: font-size 0.3s ease, background 0.3s ease, color 0.3s ease;
     background: #C23939;
