@@ -2,6 +2,7 @@ const path = require('path');
 const Movie = require('../models/Movie');
 const Rating = require('../models/Rating');
 const Review = require('../models/Review');
+const ReviewLike = require('../models/ReviewLike');
 const User = require('../models/User');
 const fs = require('fs/promises');
 
@@ -26,6 +27,10 @@ exports.getMovieDetails = async (req, res) => {
             }]
         });
 
+        let reviewLikes = await ReviewLike.findAll({
+            where: { userId: req.session.user.id },
+        });
+
         reviews.forEach(review => {
             review.reviewText = decodeURIComponent(review.reviewText);
         });
@@ -39,9 +44,14 @@ exports.getMovieDetails = async (req, res) => {
             userReview.reviewText = decodeURIComponent(userReview.reviewText);
         }
 
+        if (reviewLikes.length === 0) {
+            reviewLikes = undefined;
+        }
+
         res.render(path.join(__dirname, '..', 'public', 'html', 'movie.ejs'), {
             movie: movie,
             reviews: reviews,
+            reviewLikes: reviewLikes,
             userReview: userReview,
             session: req.session
         });
@@ -181,6 +191,10 @@ exports.deleteReview = async (req, res) => {
             return;
         }
 
+        await ReviewLike.destroy({
+            where: { id: review.id }
+        });
+
         // Удаление всех рецензий, связанных с фильмом
         await Review.destroy({
             where: {
@@ -193,6 +207,39 @@ exports.deleteReview = async (req, res) => {
     } catch (error) {
         console.error('Error deleting movie:', error);
         res.status(500).send('Internal Server Error');
+    }
+};
+
+
+// Server-side code (assuming you're using Express.js)
+
+// Route to handle setting a like for a review
+exports.postLikeReview = async (req, res) => {
+    try {
+        const { userId, reviewId } = req.body;
+
+        // Check if the user has already liked the review
+        const existingLike = await ReviewLike.findOne({
+            where: { userId, reviewId }
+        });
+
+        if (existingLike) {
+            // User has already liked the review, so remove the like
+            await ReviewLike.destroy({
+                where: { userId, reviewId }
+            });
+            res.json({ liked: false });
+        } else {
+            // User hasn't liked the review, so add a like
+            await ReviewLike.create({
+                userId,
+                reviewId
+            });
+            res.json({ liked: true });
+        }
+    } catch (error) {
+        console.error('Error setting like for review:', error);
+        res.status(500).json({ error: 'Failed to set like for review' });
     }
 };
 

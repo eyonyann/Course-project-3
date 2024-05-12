@@ -11,6 +11,7 @@ const router = express.Router();
 
 const User = require('./models/User');
 const Review = require('./models/Review');
+const ReviewLike = require('./models/ReviewLike');
 const Rating = require('./models/Rating');
 const Movie = require('./models/Movie');
 
@@ -26,6 +27,12 @@ Rating.belongsTo(User, { foreignKey: 'userId' });
 
 Movie.hasMany(Rating, { foreignKey: 'movieId' });
 Rating.belongsTo(Movie, { foreignKey: 'movieId' });
+
+User.hasMany(ReviewLike, { foreignKey: 'userId' });
+ReviewLike.belongsTo(User, { foreignKey: 'userId' });
+
+Review.hasMany(ReviewLike, { foreignKey: 'reviewId' });
+ReviewLike.belongsTo(Review, { foreignKey: 'reviewId' });
 
 
 module.exports = {
@@ -137,6 +144,7 @@ app.get('/movie/:id', requireLogin,  movieController.getMovieDetails);
 app.post('/movie/:id', upload.none(), movieController.postMovieDetails);
 app.delete('/movie/:id', requireAdminLogin, movieController.deleteMovie);
 app.delete('/movie/:id/deleteReview', movieController.deleteReview);
+app.post('/likeReview', movieController.postLikeReview);
 
 app.get('/movie/:id/edit', requireAdminLogin, requireLogin, movieEditController.getMovieEditDetails);
 app.post('/movie/:id/edit', upload.none(), movieEditController.postMovieEditDetails);

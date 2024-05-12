@@ -61,7 +61,7 @@
 
     <div class="review-section">
         <% if (userReview && userReview.movieId == movie.id) { %>
-            <button class="review-button" id="review-button">Изменить рецензию</button>
+            <button class="review-form-button" id="review-button">Изменить рецензию</button>
             <form class="review-form" action="/movie" method="post" id="review-form" style="display: none;">
                 <input class="form-epigraph" type="text" placeholder="Эпиграф" value="<%= userReview.reviewEpigraph %>">
                 <textarea class="form-text" placeholder="Текст рецензии"><%= userReview.reviewText %></textarea>
@@ -72,35 +72,47 @@
                 </div>
             </form>
         <% } else { %>
-            <button class="review-button" id="review-button">Написать рецензию</button>
+            <button class="review-form-button" id="review-button">Написать рецензию</button>
                 <form class="review-form" action="/movie" method="post" id="review-form" style="display: none;">
                     <input class="form-epigraph" type="text" placeholder="Эпиграф">
                     <textarea class="form-text" placeholder="Текст рецензии"></textarea>
                     <div class="error-message" id="errorMessage"></div>
-                    <div class="review-buttons">
+                    <div class="review-form-buttons">
                         <button type="button" class="review-form-cancel">Отмена</button>
                         <button type="submit" class="review-form-accept">Готово</button>
                     </div>
                 </form>
         <% } %>
         <span>Рецензии зрителей</span>
-            <div class="review-container" id="review-container">
-                <% reviews.forEach(review => { %>
-                    <div class="review" id="review<%= review.id %>">
-                        <div class="review-top-bar">
-                            <div class="review-username" id="review-username"><%= review.User.username %></div>
+        <div class="review-container" id="review-container">
+            <% reviews.forEach(review => { %>
+                <div class="review" id="review<%= review.id %>">
+                    <div class="review-top-bar">
+                        <div class="review-username" id="review-username"><%= review.User.username %></div>
+                        <div class="review-buttons">
                             <% if (session.user && (session.user.id === 1 || session.user.id === review.userId)) { %>
                                 <button class="review-delete" onclick="deleteReview(<%= movie.id %> , <%= review.userId %>)">Удалить</button>
                             <% } %>
-                            <button class="review-like">🤍</button>
-                        </div>
-                        <div class="review-epigraph" id="review-epigraph"><%= review.reviewEpigraph %></div>
-                        <div class="review-text" id="review-text<%= review.id %>" data-full-text="<%= review.reviewText %>"><%= review.reviewText.substring(0, 500) %></div>
 
-                        <button class="review-text-show-more-button" onclick="showMore(<%= JSON.stringify(review.reviewText) %>)">Показать еще</button>
+                            <% if (reviewLikes !== undefined) { reviewLikes.forEach(like => { %>
+                                <% if (like.reviewId === review.id) { %>
+                                        <button class="review-like-active" id="reviewLikeButton" onclick="setLike(<%= session.user.id %>, <%= review.id %>)">🤍</button>
+                                <% } else {%>
+                                        <button class="review-like" id="reviewLikeButton" onclick="setLike(<%= session.user.id %>, <%= review.id %>)">🤍</button>
+                                    <% }%>
+                                <% }); %>
+                            <% } else { %>
+                                <button class="review-like" id="reviewLikeButton" onclick="setLike(<%= session.user.id %>, <%= review.id %>)">🤍</button>
+                            <% }%>
+                        </div>
                     </div>
-                <% }); %>
-            </div>
+                    <div class="review-epigraph" id="review-epigraph"><%= review.reviewEpigraph %></div>
+                    <div class="review-text" id="review-text<%= review.id %>" data-full-text="<%= review.reviewText %>"><%= review.reviewText.substring(0, 500) %>...</div>
+
+                    <button class="review-text-show-more-button" onclick="showMore(<%= JSON.stringify(review.reviewText) %>)">Показать еще</button>
+                </div>
+            <% }); %>
+        </div>
 
 
     </div>
@@ -310,11 +322,33 @@
     }
 
 
+    async function setLike(userId, reviewId) {
+        try {
+            const response = await fetch('/likeReview', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId, reviewId })
+            });
 
-
-
-
-
+            if (response.ok) {
+                const responseData = await response.json();
+                const likeButton = document.getElementById(`reviewLikeButton`);
+                if (responseData.liked) {
+                    // Set the like button style to indicate it's liked
+                    likeButton.classList ='review-like-active';
+                } else {
+                    // Remove the like button style to indicate it's unliked
+                    likeButton.classList = 'review-like';
+                }
+            } else {
+                throw new Error('Failed to set like for review');
+            }
+        } catch (error) {
+            console.error('Error setting like for review:', error);
+        }
+    }
 
 </script>
 

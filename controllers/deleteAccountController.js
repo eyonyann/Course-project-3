@@ -2,11 +2,16 @@ const path = require('path');
 const User = require('../models/User');
 const Rating = require("../models/Rating");
 const Review = require("../models/Review");
+const ReviewLike = require("../models/ReviewLike");
 
 
 exports.deleteAccount = async (req, res) => {
     try {
         await Rating.destroy({
+            where: { userId: req.session.user.id }
+        });
+
+        await ReviewLike.destroy({
             where: { userId: req.session.user.id }
         });
 

@@ -158,20 +158,7 @@
 
 
 
-    window.addEventListener('DOMContentLoaded', (event) => {
-        fetch('/profile')
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Failed to fetch profile data');
-            })
-            .then(data => {
-                document.getElementById('name-box').value = data.name || 'Фамилия Имя';
-                document.getElementById('username-box').value = data.username || 'Username';
-            })
-            .catch(error => console.error('Failed to load user data:', error));
-    });
+
 </script>
 
 </body>

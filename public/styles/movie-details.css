@@ -179,7 +179,7 @@
     color: rgba(53, 53, 53, 0.7);
 }
 
-.review-buttons {
+.review-form-buttons {
     justify-content: center;
     align-items: center;
     margin-top: 5px;
@@ -223,7 +223,7 @@
     margin-top: 50px;
 }
 
-.review-button {
+.review-form-button {
     background: #ffeecf;
     border: none;
     color: #353535;
@@ -263,8 +263,13 @@
     flex-direction: row;
 }
 
-.review-like {
+.review-buttons {
+    margin-left: auto;
+    align-items: center;
+}
 
+.review-like {
+    padding: 5px 10px;
     margin-right: 10px;
     cursor: pointer;
     font-size: 30px;
@@ -274,8 +279,7 @@
 }
 
 .review-delete {
-
-    margin-left: auto;
+    padding: 10px 10px;
     margin-right: 10px;
     font-size: 20px;
     font-weight: bold;
@@ -305,8 +309,8 @@
 }
 
 .review-like-active {
+    padding: 5px 10px;
     background: #C23939;
-    margin-left: auto;
     margin-right: 10px;
     cursor: pointer;
     font-size: 30px;
