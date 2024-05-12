@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="../styles/users-container.css">
     <link rel="stylesheet" type="text/css" href="../styles/panel-container.css">
     <link rel="stylesheet" type="text/css" href="../styles/movie-details.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title rel="shortcut icon">😊 Movie Reviews</title>
     <link rel="shortcut icon" href="../res/logo.png" />
 </head>
@@ -31,8 +32,10 @@
     <div class="statistic-container">
         <h2 class="statistic-name">Ваша статистика</h2>
         <div class="statistic-information">
+            <canvas id="movieChart" width="800" height="400"></canvas>
         </div>
     </div>
+
     <div class="add-movie-container">
         <h2 class="add-movie-name">Добавить фильм</h2>
         <form class="movie-form-add">
@@ -90,7 +93,8 @@
 </footer>
 
 <script>
-    // Определяем грустный смайлик
+
+
     const sadSmiley = '😞';
 
     // Функция для обработки события изменения видимости вкладки
@@ -226,6 +230,76 @@
         </button>`;
         });
     });
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('movieChart')?.getContext('2d');
+        if (!ctx) {
+            console.error('Canvas context is null.');
+            return;
+        }
+
+        // Создание массивов movieDates и movieCounts
+        let movieDates = [];
+        let movieCounts = [];
+
+        // Заполнение массивов данными из movies
+        <%
+        const dateCountsMap = {};
+        movies.forEach(movie => {
+            const date = new Date(movie.dateAdded).toISOString().slice(0, 10); // Приведение к формату YYYY-MM-DD
+            if (!dateCountsMap[date]) {
+                dateCountsMap[date] = 0;
+            }
+            dateCountsMap[date]++;
+        });
+
+        Object.keys(dateCountsMap).forEach(date => {
+        %>
+        movieDates.push('<%= date %>'); // Добавлены кавычки вокруг даты
+        movieCounts.push(<%= dateCountsMap[date] %>); // Количество остается без кавычек
+        <%});%>
+
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: movieDates,
+                datasets: [{
+                    label: 'Количество добавленных фильмов',
+                    data: movieCounts,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'month'
+                        },
+                        gridLines: {
+                            display: false // Удаление сетки по оси x
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: false // Удаление сетки по оси y
+                        }
+                    }]
+                }
+            }
+        });
+    });
+
+
+
+
+
+
+
 
 
 </script>

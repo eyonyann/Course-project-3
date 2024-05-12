@@ -30,8 +30,14 @@ console.log(upload)
 exports.getPanel = async (req, res) => {
     try {
         const users = await User.findAll();
+        const movies = await Movie.findAll();
+        const moviesData = movies.map(movie => ({
+            title: movie.title,
+            dateAdded: movie.dateAdded,
+        }));
         res.render(path.join(__dirname, '..', 'public', 'html', 'panel.ejs'), {
             session: req.session,
+            movies: movies,
             users: users
         });
     } catch (error) {

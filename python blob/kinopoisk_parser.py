@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 import sqlite3
 import random
+from datetime import datetime, timedelta
 
 # Функция для подключения к базе данных SQLite
 def connect_to_sqlite():
@@ -43,10 +44,16 @@ def connect_to_mysql():
 def add_movie_to_mysql(connection, movie):
     try:
         cursor = connection.cursor()
-        sql = "INSERT INTO movies (title, director, country, year, description, rating, countOfRatings, poster) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO movies (title, director, country, year, description, rating, countOfRatings, poster, dateAdded) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         countOfRatings = random.randint(10, 20)
+        
+        # Генерация случайной даты в заданном диапазоне
+        start_date = datetime(2024, 1, 1)
+        end_date = datetime(2024, 5, 12)
+        random_date = start_date + timedelta(days=random.randint(0, (end_date - start_date).days))
+
         title, director, country, year, description, rating, poster = movie
-        val = [title, director, country, year, description, rating, countOfRatings, poster]
+        val = [title, director, country, year, description, rating, countOfRatings, poster, random_date]
         cursor.execute(sql, val)
         connection.commit()
         print(f"Фильм '{movie[1]}' добавлен в базу данных MySQL")
