@@ -31,6 +31,10 @@ exports.getMovieDetails = async (req, res) => {
             where: { userId: req.session.user.id },
         });
 
+        if (reviewLikes.length === 0) {
+            reviewLikes = undefined;
+        }
+
         reviews.forEach(review => {
             review.reviewText = decodeURIComponent(review.reviewText);
         });
@@ -44,14 +48,18 @@ exports.getMovieDetails = async (req, res) => {
             userReview.reviewText = decodeURIComponent(userReview.reviewText);
         }
 
-        if (reviewLikes.length === 0) {
-            reviewLikes = undefined;
-        }
+        const userRating = await Rating.findOne({
+            where: { userId: req.session.user.id },
+        });
+
+
+
 
         res.render(path.join(__dirname, '..', 'public', 'html', 'movie.ejs'), {
             movie: movie,
             reviews: reviews,
             reviewLikes: reviewLikes,
+            userRating: userRating,
             userReview: userReview,
             session: req.session
         });

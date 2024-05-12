@@ -50,7 +50,15 @@
     <div class="rating-section">
         <div class="rating-buttons">
             <span>Оцените:</span>
-            <div id="rating-container"></div>
+            <div id="rating-container">
+                <% for (var i = 1; i <= 10; i++) {%>
+                    <% if (userRating && (userRating.rating == i) ) {%>
+                        <button class="rating-star rating-star-active"><%=i%></button>
+                    <%} else {%>
+                        <button class="rating-star"><%=i%></button>
+                    <%}%>
+                <%}%>
+            </div>
         </div>
         <div class="big-rating">
             <span>Рейтинг:</span>
@@ -139,15 +147,8 @@
 
     // Добавляем обработчик события изменения видимости вкладки
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    var ratingContainer = document.getElementById('rating-container');
 
-    for (var i = 1; i <= 10; i++) {
-        var button = document.createElement('button');
-        button.classList.add('rating-star');
-        button.textContent = i;
 
-        ratingContainer.appendChild(button);
-    }
 
     function navigateTo(url) {
         window.location.href = url;
@@ -157,6 +158,10 @@
     document.addEventListener('DOMContentLoaded', function() {
         const ratingButtons = document.querySelectorAll('.rating-star');
         let currentRating = null;
+        <% if (userRating) { %>
+            currentRating = <%= userRating.rating %>;
+        <% } %>
+
         const movieId = window.location.pathname.split('/').pop(); // This should be dynamically set based on the movie being rated
 
         ratingButtons.forEach(button => {
