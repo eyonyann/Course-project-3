@@ -26,9 +26,19 @@ exports.getMovieDetails = async (req, res) => {
             }]
         });
 
+        reviews.forEach(review => {
+            review.reviewText = decodeURIComponent(review.reviewText);
+        });
+
+
+        const userReview = await Review.findOne({
+            where: { userId: req.session.user.id }
+        });
+
         res.render(path.join(__dirname, '..', 'public', 'html', 'movie.ejs'), {
             movie: movie,
             reviews: reviews,
+            userReview: userReview,
             session: req.session
         });
     } catch (error) {
@@ -148,4 +158,41 @@ exports.deleteMovie = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+
+exports.deleteReview = async (req, res) => {
+    try {
+        const movieId = req.params.id;
+        const userId = req.query.userId;
+
+        const review = await Review.findOne({
+            where: {
+                movieId: movieId,
+                userId: userId
+            }
+        });
+
+        if (!review) {
+            res.status(404).send('Movie not found');
+            return;
+        }
+
+        // Удаление всех рецензий, связанных с фильмом
+        await Review.destroy({
+            where: {
+                movieId: review.movieId,
+                userId: review.userId
+            }
+        });
+
+        res.sendStatus(200); // Отправляем успешный статус ответа
+    } catch (error) {
+        console.error('Error deleting movie:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+
+
+
 

@@ -136,6 +136,7 @@ app.post('/logout', upload.none(), logoutController.postLogout);
 app.get('/movie/:id', requireLogin,  movieController.getMovieDetails);
 app.post('/movie/:id', upload.none(), movieController.postMovieDetails);
 app.delete('/movie/:id', requireAdminLogin, movieController.deleteMovie);
+app.delete('/movie/:id/deleteReview', movieController.deleteReview);
 
 app.get('/movie/:id/edit', requireAdminLogin, requireLogin, movieEditController.getMovieEditDetails);
 app.post('/movie/:id/edit', upload.none(), movieEditController.postMovieEditDetails);
