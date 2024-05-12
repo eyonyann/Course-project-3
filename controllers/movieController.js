@@ -35,6 +35,8 @@ exports.getMovieDetails = async (req, res) => {
             where: { userId: req.session.user.id }
         });
 
+        userReview.reviewText = decodeURIComponent(userReview.reviewText);
+
         res.render(path.join(__dirname, '..', 'public', 'html', 'movie.ejs'), {
             movie: movie,
             reviews: reviews,
