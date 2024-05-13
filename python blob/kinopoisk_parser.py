@@ -52,8 +52,11 @@ def add_movie_to_mysql(connection, movie):
         end_date = datetime(2024, 5, 12)
         random_date = start_date + timedelta(days=random.randint(0, (end_date - start_date).days))
 
+        random_time = datetime.strptime(f'{random.randint(0, 23)}:{random.randint(0, 59)}', '%H:%M').time()
+        random_datetime = datetime.combine(random_date, random_time)
+
         title, director, country, year, description, rating, poster = movie
-        val = [title, director, country, year, description, rating, countOfRatings, poster, random_date]
+        val = [title, director, country, year, description, rating, countOfRatings, poster, random_datetime]
         cursor.execute(sql, val)
         connection.commit()
         print(f"Фильм '{movie[1]}' добавлен в базу данных MySQL")

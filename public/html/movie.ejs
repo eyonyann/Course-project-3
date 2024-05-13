@@ -102,22 +102,19 @@
                                 <button class="review-delete" onclick="deleteReview(<%= movie.id %> , <%= review.userId %>)">Удалить</button>
                             <% } %>
 
-                            <% if (reviewLikes !== undefined) { reviewLikes.forEach(like => { %>
-                                <% if (like.reviewId === review.id) { %>
-                                        <button class="review-like-active" id="reviewLikeButton" onclick="setLike(<%= session.user.id %>, <%= review.id %>)">🤍</button>
-                                <% } else {%>
-                                        <button class="review-like" id="reviewLikeButton" onclick="setLike(<%= session.user.id %>, <%= review.id %>)">🤍</button>
-                                    <% }%>
-                                <% }); %>
-                            <% } else { %>
-                                <button class="review-like" id="reviewLikeButton" onclick="setLike(<%= session.user.id %>, <%= review.id %>)">🤍</button>
-                            <% }%>
+                            <button class="review-like" id="reviewLikeButton<%= review.id %>" onclick="setLike(<%= session.user.id %>, <%= review.id %>)">🤍</button>
+                            <% if (reviewLikes !== undefined) {
+                                const userLike = reviewLikes.find(like => like.reviewId === review.id && like.userId === session.user.id);
+                            if (userLike) { %>
+                                <script>document.getElementById('reviewLikeButton<%= review.id %>').classList.add('review-like-active');</script>
+                            <% }
+                            } %>
                         </div>
                     </div>
                     <div class="review-epigraph" id="review-epigraph"><%= review.reviewEpigraph %></div>
                     <div class="review-text" id="review-text<%= review.id %>" data-full-text="<%= review.reviewText %>"><%= review.reviewText.substring(0, 500) %>...</div>
 
-                    <button class="review-text-show-more-button" onclick="showMore(<%= JSON.stringify(review.reviewText) %>)">Показать еще</button>
+                    <button class="review-text-show-more-button" id="review-text-show-more-button<%= review.id %>" onclick="showMore(<%= JSON.stringify(review.reviewText) %>, <%= review.id %>)">Показать еще</button>
                 </div>
             <% }); %>
         </div>
@@ -314,15 +311,15 @@
         }
     }
 
-    function showMore(fullText) {
+    function showMore(fullText, reviewId) {
         // Get the element containing the truncated text
-        var textElement = document.querySelector('.review-text');
+        var textElement = document.getElementById('review-text' + reviewId);
 
         // Replace the truncated text with the full text
         textElement.innerText = fullText;
 
         // Hide the "Показать еще" button
-        var showMoreButton = document.querySelector('.review-text-show-more-button');
+        var showMoreButton = document.getElementById('review-text-show-more-button' + reviewId);
         showMoreButton.style.display = 'none';
     }
 
@@ -339,13 +336,15 @@
 
             if (response.ok) {
                 const responseData = await response.json();
-                const likeButton = document.getElementById(`reviewLikeButton`);
+                const likeButton = document.getElementById(`reviewLikeButton${reviewId}`);
                 if (responseData.liked) {
                     // Set the like button style to indicate it's liked
-                    likeButton.classList ='review-like-active';
+                    likeButton.classList.add('review-like-active');
+                    likeButton.classList.remove('review-like');
                 } else {
                     // Remove the like button style to indicate it's unliked
-                    likeButton.classList = 'review-like';
+                    likeButton.classList.add('review-like');
+                    likeButton.classList.remove('review-like-active');
                 }
             } else {
                 throw new Error('Failed to set like for review');
@@ -354,6 +353,7 @@
             console.error('Error setting like for review:', error);
         }
     }
+
 
 </script>
 
