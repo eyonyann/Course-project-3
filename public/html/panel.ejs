@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="../styles/panel-container.css">
     <link rel="stylesheet" type="text/css" href="../styles/movie-details.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <title rel="shortcut icon">😊 Movie Reviews</title>
     <link rel="shortcut icon" href="../res/logo.png" />
 </head>
@@ -111,7 +113,6 @@
     }
 
 
-
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('.movie-form-add');
         const fileInput = document.getElementById('file-input');
@@ -149,7 +150,7 @@
             const submitButton = event.submitter;
 
             if (submitButton.classList.contains('movie-form-accept')) {
-                isSubmitted = true; // Устанавливаем флаг отправки формы
+                let isSubmitted = true; // Устанавливаем флаг отправки формы
 
                 const title = document.querySelector('.movie-form-title').value;
                 const director = document.querySelector('.movie-form-director').value;
@@ -234,6 +235,7 @@
 
 
 
+
     document.addEventListener('DOMContentLoaded', function() {
         var ctx = document.getElementById('movieChart')?.getContext('2d');
         if (!ctx) {
@@ -241,26 +243,47 @@
             return;
         }
 
-        // Создание массивов movieDates и movieCounts
+// Создание массивов movieDates, movieCounts и movieRatings
         let movieDates = [];
         let movieCounts = [];
+        let movieRatings = [];
 
-        // Заполнение массивов данными из movies
+// Заполнение массивов данными из movies
         <%
         const dateCountsMap = {};
+        const dateRatingsMap = {};
+
         movies.forEach(movie => {
-            const date = new Date(movie.dateAdded).toISOString().slice(0, 10); // Приведение к формату YYYY-MM-DD
+
+            const dateAdded = new Date(movie.dateAdded);
+            const month = String(dateAdded.getMonth() + 1).padStart(2, '0');
+            const day = String(dateAdded.getDate()).padStart(2, '0');
+            const date = `${month}-${day}`;
+
+            /*const date = new Date(movie.dateAdded).toISOString().slice(0, 10);*/
+
             if (!dateCountsMap[date]) {
                 dateCountsMap[date] = 0;
             }
+            if (!dateRatingsMap[date]) {
+                dateRatingsMap[date] = [];
+            }
             dateCountsMap[date]++;
+            dateRatingsMap[date].push(movie.rating); // Добавляем рейтинг фильма в массив рейтингов для данной даты
         });
 
         Object.keys(dateCountsMap).forEach(date => {
+        const ratings = dateRatingsMap[date];
+        const averageRating = ratings.reduce((acc, rating) => acc + Number(rating), 0) / ratings.length;
         %>
         movieDates.push('<%= date %>'); // Добавлены кавычки вокруг даты
         movieCounts.push(<%= dateCountsMap[date] %>); // Количество остается без кавычек
+        movieRatings.push(<%= averageRating %>); // Средний рейтинг фильмов для данной даты
         <%});%>
+
+
+
+
 
         var myChart = new Chart(ctx, {
             type: 'line',
@@ -271,26 +294,29 @@
                     data: movieCounts,
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 2
+                }, {
+                    label: 'Средний рейтинг фильмов',
+                    data: movieRatings,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2
                 }]
             },
             options: {
                 scales: {
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            unit: 'month'
-                        },
-                        gridLines: {
-                            display: false // Удаление сетки по оси x
+                    x: {
+                        grid: {
+                            display: false
                         }
-                    }],
-                    yAxes: [{
-                        gridLines: {
-                            display: false // Удаление сетки по оси y
+                    },
+                    y: {
+
+                        grid: {
+                            display: false
                         }
-                    }]
+                    }
                 }
             }
+
         });
     });
 

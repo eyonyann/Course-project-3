@@ -128,7 +128,7 @@ app.get('/profile', requireLogin, profileController.getProfile);
 app.post('/profile', requireLogin, profileController.postProfile);
 app.post('/deleteAccount', upload.none(), deleteAccountController.deleteAccount);
 
-app.get('/panel', requireLogin, panelController.getPanel);
+app.get('/panel', requireAdminLogin, panelController.getPanel);
 app.post('/panel', upload.single('poster'), panelController.postPanel);
 
 

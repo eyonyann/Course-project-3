@@ -49,7 +49,10 @@ exports.getMovieDetails = async (req, res) => {
         }
 
         const userRating = await Rating.findOne({
-            where: { userId: req.session.user.id },
+            where: {
+                userId: req.session.user.id,
+                movieId: movieId
+            },
         });
 
 
